@@ -13,8 +13,9 @@ while i < 1:
         converted_text = text_input.upper()
         print("The result is: ", converted_text)
         with open('output.txt', 'a') as f:
+            f.write('\n')
             f.write(converted_text)
-        print("I also went ahead and pasted the converted text into a file called output.txt, if it's easier to copy from there.")
+        print("I also added the converted text into a file called output.txt, if it's easier to copy from there.")
         redo = str(input("Continue? (y/n) "))
         if redo == "y":
             i += 1
@@ -24,10 +25,11 @@ while i < 1:
         converted_text = text_input.lower()
         print("The result is: ", converted_text)
         with open('output.txt', 'a') as f:
+            f.write('\n')
             f.write(converted_text)
         print("I also added the converted text into a file called output.txt, if it's easier to copy from there.")
         redo = str(input("Continue? (y/n) "))
-        if redo == y:
+        if redo == "y":
             i += 1
-        elif redo == n:
+        elif redo == "n":
             break
