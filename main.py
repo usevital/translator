@@ -14,7 +14,6 @@ def output_converted(case, text):
     else:
         print("Something went wrong.")
         error = 1
-        break
     print(f"The result is: {converted_text}")
     pyperclip.copy(converted_text)
     with open('output.txt', 'a') as f:
