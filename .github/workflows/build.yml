@@ -1,0 +1,42 @@
+name: Build Python app
+
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+    build:
+        name: Build app on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+        steps:
+            - name: Checkout ref
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.11
+
+            - name: Install requirements
+              run: |
+                pip install -r requirements.txt
+                pip install pyinstaller
+
+            - name: PyInstaller
+              run: pyinstaller main.py
+            
+            - name: Upload build/
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{ matrix.os }} build
+                path: build/
+                
+            - name: Upload Build
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{ matrix.os }} dist
+                path: dist/
