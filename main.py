@@ -19,7 +19,7 @@ def output_converted(case, text):
         f.write('\n')
         f.write(converted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
-    print("I added the converted text into a file called output.txt, if it's easier to copy from there.")
+    print("I also added it into a file called output.txt, if it's easier to copy from there.")
 
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
