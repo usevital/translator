@@ -2,16 +2,19 @@ import pyperclip
 
 i = 0
 
-def text_flip(text):
+def flipUD(text):
     flip_map = str.maketrans(
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?\"'()[]{}",
         "ɐqɔpǝɟƃɥᴉſʞʅɯuodbɹsʇnʌʍxʎz∀𐐒ƆᗡƎℲ⅁HIſʞ⅃WNOԀΌᴚS⊥∩ΛM⅄Z⇂ᘕԐત૨୧⌋8მ0˙ˋ¡¿\„,)(][}{"
     )
 
-    converted_text = text.translate(flip_map)[::-1]
+    return text.translate(flip_map)[::-1]
+
+def text_flip(flip_this):
+    converted_text = flipUD(flip_this)
     print("The result is: ", converted_text)
     pyperclip.copy(converted_text)
-    with open('flip_history.txt', 'a') as f:
+    with open('flip_history.txt', 'a', encoding="utf-8") as f:
         f.write('\n')
         f.write(converted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
@@ -58,5 +61,8 @@ while i < 1:
                 break
     elif mode.lower() == "flip":
         text_flip(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
     else:
         print("Couldn't understand you. Did you perhaps misspell the mode?")
