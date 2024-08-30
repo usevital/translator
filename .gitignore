@@ -32,8 +32,9 @@ MANIFEST
 *.manifest
 *.spec
 
-# Output txt
-output.txt
+# History files
+case_history.txt
+flip_history.txt
 
 # Installer logs
 pip-log.txt

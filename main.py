@@ -1,12 +1,23 @@
-import logging
 import pyperclip
-
-
-logging.basicConfig(filename='output.txt', level=logging.INFO, format='')
 
 i = 0
 
-def output_converted(case, text):
+def text_flip(text):
+    flip_map = str.maketrans(
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?\"'()[]{}",
+        "ɐqɔpǝɟƃɥᴉſʞʅɯuodbɹsʇnʌʍxʎz∀𐐒ƆᗡƎℲ⅁HIſʞ⅃WNOԀΌᴚS⊥∩ΛM⅄Z⇂ᘕԐત૨୧⌋8მ0˙ˋ¡¿\„,)(][}{"
+    )
+
+    converted_text = text.translate(flip_map)[::-1]
+    print("The result is: ", converted_text)
+    pyperclip.copy(converted_text)
+    with open('flip_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(converted_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called output.txt, if it's easier to copy from there.")
+
+def case_switch(case, text):
     if case == 1:
         converted_text = text.upper()
     elif case == 2:
@@ -15,7 +26,7 @@ def output_converted(case, text):
         print("Something went wrong.")
     print(f"The result is: {converted_text}")
     pyperclip.copy(converted_text)
-    with open('output.txt', 'a') as f:
+    with open('case_history.txt', 'a') as f:
         f.write('\n')
         f.write(converted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
@@ -31,16 +42,21 @@ def prompt_redo():
 
 print("At any time, type EXIT to stop. ")
 while i < 1:
-    err = 0
-    mode = int(input("Type 1 for uppercase, 2 for lowercase. "))
-    text_input = str(input("What would you like to fully uppercase/lowercase? "))
-    if mode == 1:
-        output_converted(mode, text_input)
-        restart = prompt_redo()
-        if restart == "stop":
-            break
-    elif mode == 2:
-        output_converted(mode, text_input)
-        restart = prompt_redo()
-        if restart == "stop":
-            break
+    mode = str(input("What mode do you wish to use? FLIP == flip text, CASE == change casing "))
+    text_input = str(input("Input the string you need to convert here: "))
+    if mode.lower() == "case":
+        casing = int(input("Type 1 for uppercase, 2 for lowercase. "))
+        if casing == 1:
+            case_switch(casing, text_input)
+            restart = prompt_redo()
+            if restart == "stop":
+                break
+        elif casing == 2:
+            case_switch(casing, text_input)
+            restart = prompt_redo()
+            if restart == "stop":
+                break
+    elif mode.lower() == "flip":
+        text_flip(text_input)
+    else:
+        print("Couldn't understand you. Did you perhaps misspell the mode?")
