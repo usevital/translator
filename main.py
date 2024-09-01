@@ -1,7 +1,5 @@
 import pyperclip
 
-i = 0
-
 def flipUD(text):
     flip_map = str.maketrans(
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?\"'()[]{}",
@@ -44,8 +42,8 @@ def prompt_redo():
 
 
 print("At any time, type EXIT to stop. ")
-while i < 1:
-    mode = str(input("What mode do you wish to use? FLIP == flip text, CASE == change casing "))
+while True:
+    mode = str(input("What mode do you wish to use? FLIP == flip text, CASE == change casing. "))
     text_input = str(input("Input the string you need to convert here: "))
     if mode.lower() == "case":
         casing = int(input("Type 1 for uppercase, 2 for lowercase. "))
