@@ -81,6 +81,6 @@ while i = 1:
             break
 
     elif mode.lower() == "EXIT":
-        i = 1
+        break
     else:
         print("Couldn't understand you. Did you perhaps misspell the mode?")
