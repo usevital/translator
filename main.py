@@ -13,7 +13,7 @@ def enchant_text(text):
         "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"'()[]{}"
     )
     enchanted_text= text.translate(enchanted_text1)
-    enchanted_text = str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', '/̇').replace('X', '/̇')
+    enchanted_text = str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', ' ̇/').replace('X', ' ̇/')
     print("The result is: ", enchanted_text)
     pyperclip.copy(enchanted_text)
     with open('enchant_history.txt', 'a', encoding="utf-8") as f:
