@@ -1,7 +1,5 @@
 import pyperclip
 
-i = 0
-
 def flipUD(text):
     flip_map = str.maketrans(
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?\"'()[]{}",
@@ -58,7 +56,7 @@ def prompt_redo():
 
 
 print("At any time, type EXIT to stop. ")
-while i = 1:
+while True:
     mode = str(input("What mode do you wish to use? FLIP == flip text, CASE == change casing ENCHANT == Convert text to the standard galactic alphabet used by the Minecraft enchanting table "))
     text_input = str(input("Input the string you need to convert here: "))
     if mode.lower() == "case":
