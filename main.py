@@ -18,11 +18,11 @@ def enchant_text(text):
     enchanted_text = str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', '/̇').replace('X', '/̇')
     print("The result is: ", enchanted_text)
     pyperclip.copy(enchanted_text)
-    with open('flip_history.txt', 'a', encoding="utf-8") as f:
+    with open('enchant_history.txt', 'a', encoding="utf-8") as f:
         f.write('\n')
         f.write(enchanted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
-    print("I also added it into a file called output.txt (if you made one called that in this directory), if it's easier to copy from there.")    
+    print("I also added it into a file called enchant_history.txt, if it's easier to copy from there.")    
 
 def text_flip(flip_this):
     converted_text = flipUD(flip_this)
@@ -32,7 +32,7 @@ def text_flip(flip_this):
         f.write('\n')
         f.write(converted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
-    print("I also added it into a file called output.txt (if you made one called that in this directory), if it's easier to copy from there.")
+    print("I also added it into a file called flip_history.txt, if it's easier to copy from there.")
 
 def case_switch(case, text):
     if case == 1:
@@ -47,7 +47,7 @@ def case_switch(case, text):
         f.write('\n')
         f.write(converted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
-    print("I also added it into a file called output.txt, if it's easier to copy from there.")
+    print("I also added it into a file called case_history.txt, if it's easier to copy from there.")
 
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
