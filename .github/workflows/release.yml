@@ -1,4 +1,6 @@
-name: Build Python app
+name: Release Python app
+
+run-name: Release ${{ github.ref_name }}
 
 on:
     push:
