@@ -1,0 +1,59 @@
+name: Build Python app
+
+on:
+    push:
+      tags:
+        - "v*"
+
+jobs:
+    build:
+        name: Build app on ${{ matrix.os }}
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+        steps:
+            - name: Checkout ref
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: 3.11
+
+            - name: Install requirements
+              run: |
+                pip install -r requirements.txt
+                pip install pyinstaller
+
+            - name: PyInstaller
+              run: pyinstaller main.py
+            
+            - name: Upload debug build
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{ matrix.os }} build
+                path: build/
+
+            - name: Upload distributable build
+              uses: actions/upload-artifact@v4
+              with:
+                name: ${{ matrix.os }} dist
+                path: dist/
+    release:
+        name: Draft a release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download distributable build
+              uses: actions/download-artifact@v4
+              with:
+                path: ${{ github.workspace }}/releases
+            
+            - name: Draft release
+              uses: ncipollo/release-action@v1.14.0
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                generateReleaseNotes: true
+                tag: ${{ github.ref_name }}
+                artifacts: ${{ github.workspace }}/releases
+                draft: true
