@@ -6,21 +6,7 @@ def flipUD(text):
         "ɐqɔpǝɟƃɥᴉſʞʅɯuodbɹsʇnʌʍxʎz∀𐐒ƆᗡƎℲ⅁HIſʞ⅃WNOԀΌᴚS⊥∩ΛM⅄Z⇂ᘕԐત૨୧⌋8მ0˙ˋ¡¿\„,)(][}{"
     )
 
-    return text.translate(flip_map)[::-1]
-def enchant_text(text):
-    enchanted_text1 = str.maketrans(
-        "abcdefghijklmnoqrstuvwzABCDEFGHIJKLMNOQRSTUVWZ1234567890.,!?\"'()[]{}",
-        "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"'()[]{}"
-    )
-    enchanted_text= text.translate(enchanted_text1)
-    enchanted_text = str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', '/̇').replace('X', '/̇')
-    print("The result is: ", enchanted_text)
-    pyperclip.copy(enchanted_text)
-    with open('enchant_history.txt', 'a', encoding="utf-8") as f:
-        f.write('\n')
-        f.write(enchanted_text)
-    print("For convenience, I've placed the converted text into your keyboard.")
-    print("I also added it into a file called enchant_history.txt, if it's easier to copy from there.")    
+    return text.translate(flip_map)[::-1]  
 
 def text_flip(flip_this):
     converted_text = flipUD(flip_this)
@@ -31,6 +17,21 @@ def text_flip(flip_this):
         f.write(converted_text)
     print("For convenience, I've placed the converted text into your keyboard.")
     print("I also added it into a file called flip_history.txt, if it's easier to copy from there.")
+
+def enchant_text(text):
+    enchanted_text1 = str.maketrans(
+        "abcdefghijklmnoqrstuvwzABCDEFGHIJKLMNOQRSTUVWZ1234567890.,!?\"'()[]{}",
+        "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"'()[]{}"
+    )
+    enchanted_text= text.translate(enchanted_text1)
+    enchanted_text = str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', ' ̇/').replace('X', ' ̇/')
+    print("The result is: ", enchanted_text)
+    pyperclip.copy(enchanted_text)
+    with open('enchant_history.txt', 'a', encoding="utf-8") as f:
+        f.write('\n')
+        f.write(enchanted_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called enchant_history.txt, if it's easier to copy from there.")  
 
 def case_switch(case, text):
     if case == 1:
