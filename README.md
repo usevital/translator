@@ -1,11 +1,13 @@
-# text-conversions
+# text-manipulations
 
-A Python script that is able to convert text in a multitude of ways.
-This script was originally made for [NotEssential](https://notessential.blurry.gay)
+![Made in Python badge](./images/made_in_python.svg)
+
+Convert your text into many different ways!
+This script was originally made for [NotEssential](https://notessential.blurry.gay) by [KTrain5169](https://github.com/KTrain5169)
 
 ## Features
 
 - Forces characters into all UPPERCASE/lowercase
 - Flips text upside down.
-- Translates to the Standard Galactic Alphabet
+- Translations to the Standard Galactic Alphabet (by [ThinkSeal](https://github.com/ThinkSeal))
 ...and more coming soon (maybe)!
