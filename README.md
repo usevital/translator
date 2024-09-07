@@ -1,6 +1,6 @@
 # text-manipulations
 
-![Made in Python badge](./images/made_in_python.svg)
+![Made in Python badge](./images/made-in-python.svg)
 
 Convert your text into many different ways!
 This script was originally made for [NotEssential](https://notessential.blurry.gay) by [KTrain5169](https://github.com/KTrain5169)
