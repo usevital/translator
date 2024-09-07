@@ -37,13 +37,13 @@ jobs:
             - name: Upload debug build
               uses: actions/upload-artifact@v4
               with:
-                name: ${{ matrix.os }} build
+                name: ${{ matrix.os }}_build
                 path: build/
 
             - name: Upload distributable build
               uses: actions/upload-artifact@v4
               with:
-                name: ${{ matrix.os }} dist
+                name: ${{ matrix.os }}_dist
                 path: dist/
     release:
         name: Draft a release
@@ -52,7 +52,8 @@ jobs:
             - name: Download distributable build
               uses: actions/download-artifact@v4
               with:
-                path: ${{ github.workspace }}/releases
+                path: release-artifacts
+                pattern: "*_dist"
             
             - name: Draft release
               uses: ncipollo/release-action@v1.14.0
@@ -60,5 +61,5 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
                 generateReleaseNotes: true
                 tag: ${{ github.ref_name }}
-                artifacts: ${{ github.workspace }}/releases
+                artifacts: releases-artifacts/*_dist
                 draft: true
