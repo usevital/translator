@@ -19,11 +19,11 @@ def text_flip(flip_this):
     print("I also added it into a file called flip_history.txt, if it's easier to copy from there.")
 
 def enchant_text(text):
-    enchanted_text1 = str.maketrans(
+    enchanted_text = str.maketrans(
         "abcdefghijklmnoqrstuvwzABCDEFGHIJKLMNOQRSTUVWZ1234567890.,!?\"'()[]{}",
         "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"'()[]{}"
     )
-    enchanted_text= text.translate(enchanted_text1)
+    enchanted_text= text.translate(enchanted_text)
     enchanted_text = str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', ' ̇/').replace('X', ' ̇/')
     print("The result is: ", enchanted_text)
     pyperclip.copy(enchanted_text)
