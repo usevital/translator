@@ -3,63 +3,76 @@ name: Release Python app
 run-name: Release ${{ github.ref_name }}
 
 on:
-    push:
-      tags:
-        - "v*"
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: write
 
 jobs:
-    build:
-        name: Build app on ${{ matrix.os }}
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                os: ["windows-latest", "macos-latest", "ubuntu-latest"]
-        steps:
-            - name: Checkout ref
-              uses: actions/checkout@v4
+  build:
+    name: Build app on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+    steps:
+      - name: Checkout ref
+        uses: actions/checkout@v4
 
-            - name: Setup Python
-              uses: actions/setup-python@v5
-              with:
-                python-version: 3.11
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
 
-            - name: Install requirements
-              run: |
-                pip install -r requirements.txt
-                pip install pyinstaller
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
 
-            - name: PyInstaller
-              run: pyinstaller main.py
-            
-            - name: Upload debug build
-              uses: actions/upload-artifact@v4
-              with:
-                name: ${{ matrix.os }}_build
-                path: build/
+      - name: PyInstaller
+        run: pyinstaller main.py
 
-            - name: Upload distributable build
-              uses: actions/upload-artifact@v4
-              with:
-                name: ${{ matrix.os }}_dist
-                path: dist/
-    release:
-        name: Draft a release
-        runs-on: ubuntu-latest
-        steps:
-            - name: Download distributable build
-              uses: actions/download-artifact@v4
-              with:
-                path: release-artifacts
-                pattern: *_dist
-            
-            - name: Draft release
-              uses: ncipollo/release-action@v1.14.0
-              with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-                generateReleaseNotes: true
-                tag: ${{ github.ref_name }}
-                artifacts: releases-artifacts/*_dist.zip
-                draft: true
+      - name: Upload debug build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}_build
+          path: build/
+
+      - name: Upload distributable build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}_dist
+          path: dist/
+
+  download:
+    name: Download distributable builds
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+    steps:
+      - name: Download distributable build
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.os }}_dist
+          path: release-artifacts
+
+  release:
+    name: Draft a release
+    runs-on: ubuntu-latest
+    needs: download
+    steps:
+      - name: (Debug) List downloaded files
+        run: ls -r release-artifacts
+        
+      - name: Draft release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          tag: ${{ github.ref_name }}
+          artifacts: release-artifacts/*_dist.zip
+          draft: true
