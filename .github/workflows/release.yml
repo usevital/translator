@@ -53,7 +53,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                 path: release-artifacts
-                pattern: "*_dist"
+                pattern: *_dist
             
             - name: Draft release
               uses: ncipollo/release-action@v1.14.0
@@ -61,5 +61,5 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
                 generateReleaseNotes: true
                 tag: ${{ github.ref_name }}
-                artifacts: releases-artifacts/*_dist
+                artifacts: releases-artifacts/*_dist.zip
                 draft: true
