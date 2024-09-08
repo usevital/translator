@@ -2,7 +2,15 @@ name: Build Python app
 
 on:
     push:
+      paths:
+        - ".github/workflows/build.yml"
+        - "main.py"
+        - "requirements.txt"
     pull_request:
+      paths:
+        - ".github/workflows/build.yml"
+        - "main.py"
+        - "requirements.txt"
     workflow_dispatch:
 
 jobs:
