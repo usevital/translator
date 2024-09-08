@@ -66,6 +66,11 @@ jobs:
           name: ${{ matrix.os }}_dist
           path: release-artifacts
 
+      - name: Rename directories to avoid duplicate file names
+        run: |
+          cd release-artifacts
+          mv main/ ${{ matrix.os }}_dist/
+
       - name: List downloaded files
         run: ls -R release-artifacts
 
@@ -83,5 +88,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_dist.zip
+          artifacts: release-artifacts/*_dist
           draft: true
