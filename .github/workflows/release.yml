@@ -49,37 +49,54 @@ jobs:
           name: ${{ matrix.os }}_dist
           path: dist/
 
-  download:
-    name: Download distributable build
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        os: ["windows-latest", "macos-latest", "ubuntu-latest"]
-    steps:
-      - name: Create release-artifacts directory
-        run: mkdir -p release-artifacts
-
-      - name: Download distributable build
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ matrix.os }}_dist
-          path: release-artifacts
-
-      - name: Rename directories to avoid duplicate file names
-        run: |
-          cd release-artifacts
-          mv main/ ${{ matrix.os }}_dist/
-
-      - name: List downloaded files
-        run: ls -R release-artifacts
-
   release:
     name: Draft a release
     runs-on: ubuntu-latest
-    needs: download
+    needs: build
     steps:
-      - name: List release-artifacts directory
+      - name: Install zipping utility
+        run: sudo apt install zip
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-latest_dist
+          path: release-artifacts
+      
+      - name: Rename Windows artifacts
+        run: |
+          cd release-artifacts
+          mv main/ windows-latest_dist/
+          zip -r ${{ github.ref }}-windows-release.zip windows-latest_dist
+          cd translator
+
+      - name: Download MacOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-latest_dist
+          path: release-artifacts
+      
+      - name: Rename Windows artifacts
+        run: |
+          cd release-artifacts
+          mv main/ macos-latest_dist/
+          zip -r ${{ github.ref }}-mac-release.zip macos-latest_dist
+          cd translator
+      
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-latest_dist
+          path: release-artifacts
+      
+      - name: Rename Windows artifacts
+        run: |
+          cd release-artifacts
+          mv main/ linux-latest_dist/
+          zip -r ${{ github.ref }}-linux-release.zip linux-latest_dist
+          cd translator
+
+      - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
       - name: Draft release
@@ -88,5 +105,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_dist
+          artifacts: release-artifacts/*-release.zip
           draft: true
