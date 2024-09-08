@@ -67,7 +67,7 @@ jobs:
         run: |
           cd release-artifacts
           mv main/ windows-latest_dist/
-          zip -r ${{ github.ref }}-windows-release.zip windows-latest_dist
+          zip -r ${{ github.ref_name }}-windows-release.zip windows-latest_dist
           cd translator
 
       - name: Download MacOS artifact
@@ -76,11 +76,11 @@ jobs:
           name: macos-latest_dist
           path: release-artifacts
       
-      - name: Rename Windows artifacts
+      - name: Rename Mac artifacts
         run: |
           cd release-artifacts
           mv main/ macos-latest_dist/
-          zip -r ${{ github.ref }}-mac-release.zip macos-latest_dist
+          zip -r ${{ github.ref_name }}-mac-release.zip macos-latest_dist
           cd translator
       
       - name: Download Linux artifact
@@ -89,11 +89,11 @@ jobs:
           name: ubuntu-latest_dist
           path: release-artifacts
       
-      - name: Rename Windows artifacts
+      - name: Rename Linux artifacts
         run: |
           cd release-artifacts
           mv main/ linux-latest_dist/
-          zip -r ${{ github.ref }}-linux-release.zip linux-latest_dist
+          zip -r ${{ github.ref_name }}-linux-release.zip linux-latest_dist
           cd translator
 
       - name: List release-artifacts directory # debug
