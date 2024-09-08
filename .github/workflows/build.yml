@@ -6,6 +6,8 @@ on:
         - ".github/**"
         - ".vscode/**"
         - "README.md"
+      tags-ignore:
+        - "v*"
     pull_request:
       paths-ignore:
         - ".github/**"
