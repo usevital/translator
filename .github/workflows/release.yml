@@ -68,7 +68,7 @@ jobs:
           cd release-artifacts
           mv main/ windows-latest_dist/
           zip -r ${{ github.ref_name }}-windows-release.zip windows-latest_dist
-          cd translator
+          cd ${{ github.workspace }}
 
       - name: Download MacOS artifact
         uses: actions/download-artifact@v4
@@ -81,7 +81,7 @@ jobs:
           cd release-artifacts
           mv main/ macos-latest_dist/
           zip -r ${{ github.ref_name }}-mac-release.zip macos-latest_dist
-          cd translator
+          cd ${{ github.workspace }}
       
       - name: Download Linux artifact
         uses: actions/download-artifact@v4
@@ -94,7 +94,7 @@ jobs:
           cd release-artifacts
           mv main/ linux-latest_dist/
           zip -r ${{ github.ref_name }}-linux-release.zip linux-latest_dist
-          cd translator
+          cd ${{ github.workspace }}
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
