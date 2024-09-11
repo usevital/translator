@@ -1,6 +1,10 @@
 import pyperclip
 import random
 from art import text2art
+import sys
+import time
+import qrcode
+from collections import Counter
 
 
 def flipUD(text):
@@ -204,6 +208,51 @@ def text_shadow(text):
     print("I also added it into a file called shadow_history.txt, if it's easier to copy from there.")
 
 
+def scroll_text(text, delay=0.1):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        time.sleep(delay)
+    print()
+
+
+def qr_code(text, filename):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(text)
+    qr.make(fit=True)
+    img = qr.make_image(fill='black', back_color='white')
+    img.save(f"{filename}.png")
+    print("QR code saved as ", filename, ".png")  # Be careful not to commit the resulting file!
+
+
+def text_to_emoticons(text):
+    emoticon_dict = {'hello': '👋', 'world': '🌍'}
+    words = text.split()
+    emojis = ' '.join(emoticon_dict.get(word.lower(), word) for word in words)
+    print("The result is: ", emojis)
+    pyperclip.copy(emojis)
+    with open('emoticons_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(emojis)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called emoticons_history.txt, if it's easier to copy from there.")
+
+
+def nerd_mode(text):
+    word_count = len(text.split())
+    char_count = len(text)
+    char_frequency = Counter(text)
+
+    print(f"Word Count: {word_count}")
+    print(f"Character Count: {char_count}")
+    print(f"Character Frequency: {char_frequency}")
+
+
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
     if redo == "y":
@@ -213,9 +262,9 @@ def prompt_redo():
 
 
 while True:
-    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\nAdd Zalgo decor to your text (ZALGO)\nConvert text to Morse code (MORSE)\n Convert to binary (BINARY)\nAdd shadows to your text (SHADOW)")
-    mode = str(input("\nWhich mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
+    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\nAdd Zalgo decor to your text (ZALGO)\nConvert text to Morse code (MORSE)\nConvert to binary (BINARY)\nAdd shadows to your text (SHADOW)\nConvert text to emoticons (EMOTICONS)\nExtra modes (EXTRA)\nExit (EXIT)")
+    mode = str(input("\nWhich mode would you like to use? "))
 
     if mode.lower() == "case":
         casing = int(input("Type U for uppercase or L for lowercase. "))
@@ -301,6 +350,40 @@ while True:
         restart = prompt_redo()
         if restart == "stop":
             break
+
+    elif mode.lower() == "scroll":
+        scroll_text(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+    
+    elif mode.lower() == "extra":
+        print("Modes:\nConvert text to emoticons (EMOTICONS)\nMake your text into QR Code (QR)\nScroll text (SCROLL)\nNerd mode (NERD)\nBack (BACK)")
+        extra_mode = str(input("Which mode would you like to use? "))
+        if extra_mode.lower() == "emoticons":
+            text_to_emoticons(text_input)
+            restart = prompt_redo()
+            if restart == "stop":
+                break
+        elif extra_mode.lower() == "qr":
+            filename = str(input("What would you like to name the QR code? "))
+            qr_code(text_input, filename)
+            restart = prompt_redo()
+            if restart == "stop":
+                break
+        elif extra_mode.lower() == "scroll":
+            scroll_text(text_input)
+            restart = prompt_redo()
+            if restart == "stop":
+                break
+        elif extra_mode.lower() == "nerd":
+            nerd_mode(text_input)
+            restart = prompt_redo()
+            if restart == "stop":
+                break
+
+        elif extra_mode.lower() == "back":
+            continue
 
     elif mode.lower() == "EXIT":
         break

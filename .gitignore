@@ -47,6 +47,9 @@ zalgo_history.txt
 morse_history.txt
 binary_history.txt
 shadow_history.txt
+emoticons_history.txt
+*.png
+!images/*.png
 
 # Installer logs
 pip-log.txt
