@@ -37,6 +37,12 @@ jobs:
       - name: List dist directory
         run: ls -R dist
 
+      - name: Rename artifacts on Mac & Linux first
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: |
+          cd dist
+          mv main ${{ matrix.os }}_${{ github.ref_name }}_release
+
       - name: Upload debug build
         uses: actions/upload-artifact@v4
         with:
@@ -75,11 +81,16 @@ jobs:
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
+      - name: Rename artifacts on Windows
+        run: |
+          cd release-artifacts
+          ren main.exe ${{ github.ref_name }}_windows-latest_release.exe
+
       - name: Draft release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*-release*
+          artifacts: release-artifacts/*_*_release*
           draft: true
