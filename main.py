@@ -138,6 +138,7 @@ def ascii_art(text):
     print("For convenience, I've placed the converted text into your keyboard.")
     print("I also added it into a file called ascii_history.txt, if it's easier to copy from there.")
 
+
 def border_text(text):
     border_text = text2art(text, font='block')
     print("The result is: ", border_text)
@@ -150,6 +151,18 @@ def border_text(text):
     print("I also added it into a file called border_history.txt, if it's easier to copy from there.")
 
 
+def zalgo_text(text):
+    zalgo_chars = ['̍', '̎', '̄', '̅', '̿', '̑', '̆', '̐', '͒', '͗', '͑', '̇', '̈', '̊', '͂', '̓', '̈', '͊', '͋', '͌', '̃', '̂', '̌', '͐', '̀', '́', '̋', '̏', '̒', '̓', '̔', '̽', '̉', 'ͣ', 'ͤ', 'ͥ', 'ͦ', 'ͧ', 'ͨ', 'ͩ', 'ͪ', 'ͫ', 'ͬ', 'ͭ', 'ͮ', 'ͯ', '̾', '͛', '͆', '̚']
+    zalgo_text = ''.join(random.choice(zalgo_chars) + char for char in text)
+    print("The result is: ", zalgo_text)
+    pyperclip.copy(zalgo_text)
+    with open('zalgo_history.txt', 'a', encoding="utf-8") as f:
+        f.write('\n')
+        f.write(zalgo_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called zalgo_history.txt, if it's easier to copy from there.")
+
+
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
     if redo == "y":
@@ -159,7 +172,7 @@ def prompt_redo():
 
 
 while True:
-    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\n")
+    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\nAdd Zalgo decor to your text (ZALGO)\n")
     mode = str(input("Which mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
 
@@ -172,6 +185,12 @@ while True:
 
     elif mode.lower() == "flip":
         text_flip(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
+    elif mode.lower() == "zalgo":
+        zalgo_text(text_input)
         restart = prompt_redo()
         if restart == "stop":
             break
