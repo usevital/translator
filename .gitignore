@@ -35,6 +35,21 @@ MANIFEST
 # History files
 case_history.txt
 flip_history.txt
+reverse_history.txt
+leetspeak_history.txt
+enchant_history.txt
+scramble_history.txt
+piglatin_history.txt
+caesar_history.txt
+ascii_history.txt
+border_history.txt
+zalgo_history.txt
+morse_history.txt
+binary_history.txt
+shadow_history.txt
+emoticons_history.txt
+*.png
+!images/*.png
 
 # Installer logs
 pip-log.txt
