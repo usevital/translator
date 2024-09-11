@@ -70,6 +70,18 @@ def case_switch(case, text):
     print("I also added it into a file called case_history.txt, if it's easier to copy from there.")
 
 
+def leetspeak(text):
+    leet_dict = {'a': '4', 'e': '3', 'l': '1', 'o': '0', 't': '7'}
+    converted_text = ''.join(leet_dict.get(char, char) for char in text.lower())
+    print("The result is: ", converted_text)
+    pyperclip.copy(converted_text)
+    with open('leetspeak_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(converted_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called leetspeak_history.txt, if it's easier to copy from there.")
+
+
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
     if redo == "y":
@@ -80,7 +92,7 @@ def prompt_redo():
 
 print("At any time, type EXIT to stop. ")
 while True:
-    mode = str(input("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nWhich mode would you like to use? "))
+    mode = str(input("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nWhich mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
     if mode.lower() == "case":
         casing = int(input("Type U for uppercase or L for lowercase. "))
@@ -103,6 +115,12 @@ while True:
 
     elif mode.lower() == "reverse":
         reverse_text(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
+    elif mode.lower() == "leetspeak":
+        leetspeak(text_input)
         restart = prompt_redo()
         if restart == "stop":
             break

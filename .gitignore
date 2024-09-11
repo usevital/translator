@@ -36,6 +36,8 @@ MANIFEST
 case_history.txt
 flip_history.txt
 reverse_history.txt
+leetspeak_history.txt
+enchant_history.txt
 
 # Installer logs
 pip-log.txt
