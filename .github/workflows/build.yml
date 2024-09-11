@@ -30,7 +30,7 @@ jobs:
                 pip install pyinstaller
 
             - name: PyInstaller
-              run: pyinstaller main.py
+              run: pyinstaller --icon=icon.ico main.py
             
             - name: Upload build/
               uses: actions/upload-artifact@v4
