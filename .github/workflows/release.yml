@@ -84,7 +84,7 @@ jobs:
       - name: Rename artifacts on Windows
         run: |
           cd release-artifacts
-          ren main.exe ${{ github.ref_name }}_windows-latest_release.exe
+          mv main.exe windows-latest_${{ github.ref_name }}_release.exe
 
       - name: Draft release
         uses: ncipollo/release-action@v1.14.0
