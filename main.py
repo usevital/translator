@@ -10,8 +10,19 @@ def flipUD(text):
     return text.translate(flip_map)[::-1]
 
 
-def text_flip(flip_this):
-    converted_text = flipUD(flip_this)
+def reverse_text(text):
+    reversed_text = text[::-1]
+    print("The result is: ", reversed_text)
+    pyperclip.copy(reversed_text)
+    with open('reverse_history.txt', 'a', encoding="utf-8") as f:
+        f.write('\n')
+        f.write(reversed_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called enchant_history.txt, if it's easier to copy from there.")
+
+
+def text_flip(text):
+    converted_text = flipUD(text)
     print("The result is: ", converted_text)
     pyperclip.copy(converted_text)
     with open('flip_history.txt', 'a', encoding="utf-8") as f:
@@ -44,9 +55,9 @@ def enchant_text(text):
 
 
 def case_switch(case, text):
-    if case == 1:
+    if case == 'U':
         converted_text = text.upper()
-    elif case == 2:
+    elif case == 'L':
         converted_text = text.lower()
     else:
         print("Something went wrong.")
@@ -69,10 +80,10 @@ def prompt_redo():
 
 print("At any time, type EXIT to stop. ")
 while True:
-    mode = str(input("What mode do you wish to use? FLIP == flip text, CASE == change casing ENCHANT == Convert text to the standard galactic alphabet used by the Minecraft enchanting table "))
+    mode = str(input("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nWhich mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
     if mode.lower() == "case":
-        casing = int(input("Type 1 for uppercase, 2 for lowercase. "))
+        casing = int(input("Type U for uppercase or L for lowercase. "))
         case_switch(casing, text_input)
         restart = prompt_redo()
         if restart == "stop":
@@ -86,6 +97,12 @@ while True:
 
     elif mode.lower() == "enchant":
         enchant_text(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
+    elif mode.lower() == "reverse":
+        reverse_text(text_input)
         restart = prompt_redo()
         if restart == "stop":
             break
