@@ -38,6 +38,7 @@ flip_history.txt
 reverse_history.txt
 leetspeak_history.txt
 enchant_history.txt
+scramble_history.txt
 
 # Installer logs
 pip-log.txt

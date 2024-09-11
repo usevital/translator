@@ -1,4 +1,5 @@
 import pyperclip
+import random
 
 
 def flipUD(text):
@@ -18,7 +19,7 @@ def reverse_text(text):
         f.write('\n')
         f.write(reversed_text)
     print("For convenience, I've placed the converted text into your keyboard.")
-    print("I also added it into a file called enchant_history.txt, if it's easier to copy from there.")
+    print("I also added it into a file called reverse_history.txt, if it's easier to copy from there.")
 
 
 def text_flip(text):
@@ -82,6 +83,17 @@ def leetspeak(text):
     print("I also added it into a file called leetspeak_history.txt, if it's easier to copy from there.")
 
 
+def scramble_text(text):
+    scrambled_text = ''.join(random.sample(text, len(text)))
+    print("The result is: ", scrambled_text)
+    pyperclip.copy(scrambled_text)
+    with open('scramble_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(scrambled_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called scramble_history.txt, if it's easier to copy from there.")
+
+
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
     if redo == "y":
@@ -92,7 +104,7 @@ def prompt_redo():
 
 print("At any time, type EXIT to stop. ")
 while True:
-    mode = str(input("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nWhich mode would you like to use? "))
+    mode = str(input("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nWhich mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
     if mode.lower() == "case":
         casing = int(input("Type U for uppercase or L for lowercase. "))
@@ -125,7 +137,14 @@ while True:
         if restart == "stop":
             break
 
+    elif mode.lower() == "scramble":
+        scramble_text(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
     elif mode.lower() == "EXIT":
         break
+
     else:
         print("Couldn't understand you. Did you perhaps misspell the mode?")
