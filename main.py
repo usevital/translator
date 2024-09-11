@@ -4,7 +4,7 @@ import pyperclip
 def flipUD(text):
     flip_map = str.maketrans(
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?\"'()[]{}",
-        "ɐqɔpǝɟɓɥᴉſʞʅɯuodbɹsʇnʌʍxʎz∀ꓭƆꓷƎℲ⅁HIſꓘ⅃WNOꓒΌꓤS⊥∩ΛM⅄Z⇂ᘕԐત૨୧⌋8მ0·ˋ¡¿\\„,)(][}{"
+        "ɐqɔpǝɟɓɥᴉſʞʅɯuodbɹsʇnʌʍxʎz∀ꓭƆꓷƎℲꓨHIſꓘ⅃WNOꓒΌꓤS⊥∩ΛM⅄Z⇂ᘕԐત૨୧⌋8მ0·ˋ¡¿\\„,)(][}{"
     )
 
     return text.translate(flip_map)[::-1]
