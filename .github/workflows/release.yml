@@ -32,7 +32,7 @@ jobs:
           pip install pyinstaller
 
       - name: PyInstaller
-        run: pyinstaller --onefile main.py
+        run: pyinstaller --onefile --icon=images/icon.ico main.py
 
       - name: List dist directory
         run: ls -R dist
