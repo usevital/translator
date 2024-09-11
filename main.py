@@ -138,6 +138,17 @@ def ascii_art(text):
     print("For convenience, I've placed the converted text into your keyboard.")
     print("I also added it into a file called ascii_history.txt, if it's easier to copy from there.")
 
+def border_text(text):
+    border_text = text2art(text, font='block')
+    print("The result is: ", border_text)
+    pyperclip.copy(border_text)
+    with open('border_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(border_text)
+        f.write('\n')
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called border_history.txt, if it's easier to copy from there.")
+
 
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
@@ -148,9 +159,10 @@ def prompt_redo():
 
 
 while True:
-    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\n")
+    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\n")
     mode = str(input("Which mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
+
     if mode.lower() == "case":
         casing = int(input("Type U for uppercase or L for lowercase. "))
         case_switch(casing, text_input)
@@ -202,6 +214,12 @@ while True:
 
     elif mode.lower() == "ascii":
         ascii_art(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+    
+    elif mode.lower() == "border":
+        border_text(text_input)
         restart = prompt_redo()
         if restart == "stop":
             break

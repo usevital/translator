@@ -42,6 +42,7 @@ scramble_history.txt
 piglatin_history.txt
 caesar_history.txt
 ascii_history.txt
+border_history.txt
 
 # Installer logs
 pip-log.txt
