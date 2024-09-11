@@ -2,17 +2,9 @@ name: Build Python app
 
 on:
     push:
-      paths-ignore:
-        - ".github/**"
-        - ".vscode/**"
-        - "README.md"
       tags-ignore:
         - "v*"
     pull_request:
-      paths-ignore:
-        - ".github/**"
-        - ".vscode/**"
-        - "README.md"
     workflow_dispatch:
     merge_group:
 
