@@ -32,7 +32,7 @@ jobs:
           pip install pyinstaller
 
       - name: PyInstaller
-        run: pyinstaller main.py
+        run: pyinstaller --onefile --icon=images/icon.ico main.py
 
       - name: List dist directory
         run: ls -R dist
@@ -54,47 +54,23 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Install zipping utility
-        run: sudo apt install zip
-
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
           name: windows-latest_dist
           path: release-artifacts
-      
-      - name: Rename Windows artifacts
-        run: |
-          cd release-artifacts
-          mv main/ windows-latest_dist/
-          zip -r ${{ github.ref_name }}-windows-release.zip windows-latest_dist
-          cd ${{ github.workspace }}
 
       - name: Download MacOS artifact
         uses: actions/download-artifact@v4
         with:
           name: macos-latest_dist
           path: release-artifacts
-      
-      - name: Rename Mac artifacts
-        run: |
-          cd release-artifacts
-          mv main/ macos-latest_dist/
-          zip -r ${{ github.ref_name }}-mac-release.zip macos-latest_dist
-          cd ${{ github.workspace }}
-      
+
       - name: Download Linux artifact
         uses: actions/download-artifact@v4
         with:
           name: ubuntu-latest_dist
           path: release-artifacts
-      
-      - name: Rename Linux artifacts
-        run: |
-          cd release-artifacts
-          mv main/ linux-latest_dist/
-          zip -r ${{ github.ref_name }}-linux-release.zip linux-latest_dist
-          cd ${{ github.workspace }}
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
@@ -105,5 +81,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*-release.zip
+          artifacts: release-artifacts/*-release*
           draft: true
