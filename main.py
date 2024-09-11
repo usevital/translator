@@ -227,7 +227,7 @@ def qr_code(text, filename):
     qr.make(fit=True)
     img = qr.make_image(fill='black', back_color='white')
     img.save(f"{filename}.png")
-    print("QR code saved as ", filename, ".png")  # Be careful not to commit the resulting file!
+    print("QR code saved as ", filename, ".png")
 
 
 def text_to_emoticons(text):
@@ -356,9 +356,9 @@ while True:
         restart = prompt_redo()
         if restart == "stop":
             break
-    
+
     elif mode.lower() == "extra":
-        print("Modes:\nConvert text to emoticons (EMOTICONS)\nMake your text into QR Code (QR)\nScroll text (SCROLL)\nNerd mode (NERD)\nBack (BACK)")
+        print("\nModes:\nConvert text to emoticons (EMOTICONS)\nMake your text into QR Code (QR)\nScroll text (SCROLL)\nNerd mode (NERD)\nBack (BACK)\nExit (EXIT)")
         extra_mode = str(input("Which mode would you like to use? "))
         if extra_mode.lower() == "emoticons":
             text_to_emoticons(text_input)
@@ -385,7 +385,10 @@ while True:
         elif extra_mode.lower() == "back":
             continue
 
-    elif mode.lower() == "EXIT":
+        elif extra_mode.lower() == "exit":
+            break
+
+    elif mode.lower() == "exit":
         break
 
     else:
