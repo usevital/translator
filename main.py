@@ -163,6 +163,47 @@ def zalgo_text(text):
     print("I also added it into a file called zalgo_history.txt, if it's easier to copy from there.")
 
 
+def morse_code(text):
+    MORSE_CODE_DICT = {
+    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+    'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+    'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..',
+    '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----',
+    ', ': '--..--', '.': '.-.-.-', '?': '..--..', '/': '-..-.', '-': '-....-', '(': '-.--.', ')': '-.--.-'
+    }
+    morse_code = ' '.join(MORSE_CODE_DICT.get(char.upper(), '') for char in text)
+    print("The result is: ", morse_code)
+    pyperclip.copy(morse_code)
+    with open('morse_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(morse_code)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called morse_history.txt, if it's easier to copy from there.")
+
+
+def binary_text(text):
+    binary_text = ' '.join(format(ord(char), '08b') for char in text)
+    print("The result is: ", binary_text)
+    pyperclip.copy(binary_text)
+    with open('binary_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(binary_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called binary_history.txt, if it's easier to copy from there.")
+
+
+def text_shadow(text):
+    shadow = '\n'.join(' ' * offset + line for line in text.split('\n'))
+    shadowed_text =  f"{text}\n{shadow}"
+    print("The result is: ", shadowed_text)
+    pyperclip.copy(shadowed_text)
+    with open('shadow_history.txt', 'a') as f:
+        f.write('\n')
+        f.write(shadowed_text)
+    print("For convenience, I've placed the converted text into your keyboard.")
+    print("I also added it into a file called shadow_history.txt, if it's easier to copy from there.")
+
+
 def prompt_redo():
     redo = str(input("Continue? (y/n) "))
     if redo == "y":
@@ -172,8 +213,8 @@ def prompt_redo():
 
 
 while True:
-    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\nAdd Zalgo decor to your text (ZALGO)\n")
-    mode = str(input("Which mode would you like to use? "))
+    print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\nAdd Zalgo decor to your text (ZALGO)\nConvert text to Morse code (MORSE)\n Convert to binary (BINARY)\nAdd shadows to your text (SHADOW)")
+    mode = str(input("\nWhich mode would you like to use? "))
     text_input = str(input("Input the string you need to convert here: "))
 
     if mode.lower() == "case":
@@ -236,9 +277,27 @@ while True:
         restart = prompt_redo()
         if restart == "stop":
             break
-    
+
     elif mode.lower() == "border":
         border_text(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
+    elif mode.lower() == "morse":
+        morse_code(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
+    elif mode.lower() == "binary":
+        binary_text(text_input)
+        restart = prompt_redo()
+        if restart == "stop":
+            break
+
+    elif mode.lower() == "shadow":
+        text_shadow(text_input)
         restart = prompt_redo()
         if restart == "stop":
             break
