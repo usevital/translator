@@ -37,8 +37,14 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
 
-      - name: PyInstaller
-        run: pyinstaller --onefile --icon=images/icon.ico main.py
+      - name: PyInstaller (Terminal GUI)
+        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py
+
+      - name: List dist directory
+        run: ls -R dist
+      
+      - name: PyInstaller (CLI)
+        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py
 
       - name: List dist directory
         run: ls -R dist
@@ -47,24 +53,26 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
           cd dist
-          mv main ${{ matrix.os }}_${{ github.ref_name }}_release
+          mv terminal_gui ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
+          mv cli_args ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
 
-      - name: Upload debug build
+      - name: Upload debug builds
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}_build
+          name: ${{ matrix.os }}_builds
           path: build/
 
-      - name: Upload distributable build
+      - name: Upload distributable builds
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}_dist
+          name: ${{ matrix.os }}_dists
           path: dist/
 
-  release:
-    name: Draft a release
+  normal_release:
+    name: Draft normal release
     runs-on: ubuntu-latest
     needs: build
+    if: '!contains(github.ref_name, "_")'
     steps:
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
@@ -87,16 +95,104 @@ jobs:
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
-      - name: Rename artifacts on Windows
+      - name: Rename Windows artifacts
         run: |
           cd release-artifacts
-          mv main.exe windows-latest_${{ github.ref_name }}_release.exe
+          mv terminal_window.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
+          mv cli_args.exe windows-latest_${{ github.ref_name }}_cmdline-release.exe
 
-      - name: Draft release
+      - name: Draft normal release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_*_release*
+          artifacts: release-artifacts/*_${{ github.ref_name }}_*-release*
           draft: true
+          name: "Release ${{ github.ref_name }}"
+
+  release_cmdgui:
+    name: Draft CMDGUI release
+    runs-on: ubuntu-latest
+    needs: build
+    if: endsWith(github.ref_name, '_CMDGUI')
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-latest_dists
+          path: release-artifacts
+
+      - name: Download MacOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-latest_dists
+          path: release-artifacts
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-latest_dists
+          path: release-artifacts
+
+      - name: List release-artifacts directory # debug
+        run: ls -R release-artifacts
+
+      - name: Rename Windows artifacts
+        run: |
+          cd release-artifacts
+          mv terminal_gui.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
+
+      - name: Draft CMDGUI release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          tag: ${{ github.ref_name }}
+          artifacts: release-artifacts/*_${{ github.ref_name }}_cmdgui-release*
+          draft: true
+          name: "CMDGUI Release ${{ github.ref_name }}"
+          body: "This is a CMDGUI-specific release."
+
+  release_cli:
+    name: Draft CLI release
+    runs-on: ubuntu-latest
+    needs: build
+    if: endsWith(github.ref_name, '_CLI')
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-latest_dists
+          path: release-artifacts
+
+      - name: Download MacOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-latest_dists
+          path: release-artifacts
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ubuntu-latest_dists
+          path: release-artifacts
+
+      - name: List release-artifacts directory # debug
+        run: ls -R release-artifacts
+
+      - name: Rename Windows artifacts
+        run: |
+          cd release-artifacts
+          mv cli_args.exe windows-latest_${{ github.ref_name }}_cmdline-release.exe
+
+      - name: Draft CLI release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          tag: ${{ github.ref_name }}
+          artifacts: release-artifacts/*_${{ github.ref_name }}_cmdline-release*
+          draft: true
+          name: "CLI Release ${{ github.ref_name }}"
+          body: "This is a CLI-specific release."
