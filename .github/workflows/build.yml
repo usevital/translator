@@ -2,6 +2,13 @@ name: Build Python app
 
 on:
     push:
+      paths:
+        - 'images/icon.ico'
+        - 'library/TextConverter.py'
+        - 'versions/terminal_window.py'
+        - 'versions/cli_args.py'
+        - '.github/workflows/build.yml'
+        - 'requirements.txt'
       tags-ignore:
         - "v*"
     pull_request:
@@ -18,6 +25,8 @@ jobs:
         steps:
             - name: Checkout ref
               uses: actions/checkout@v4
+              with:
+                fetch-depth: 2
 
             - name: Setup Python
               uses: actions/setup-python@v5
@@ -29,16 +38,19 @@ jobs:
                 pip install -r requirements.txt
                 pip install pyinstaller
 
-            - name: PyInstaller
-              run: pyinstaller --icon=images/icon.ico main.py
-            
-            - name: Upload build/
+            - name: PyInstaller (Terminal GUI)
+              run: pyinstaller --icon=images/icon.ico versions/terminal_gui.py
+
+            - name: PyInstaller (CLI)
+              run: pyinstaller --icon=images/icon.ico versions/cli_args.py
+
+            - name: Upload Builds
               uses: actions/upload-artifact@v4
               with:
                 name: ${{ matrix.os }} build
                 path: build/
 
-            - name: Upload Build
+            - name: Upload Dists
               uses: actions/upload-artifact@v4
               with:
                 name: ${{ matrix.os }} dist
