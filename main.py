@@ -263,11 +263,10 @@ def prompt_redo():
 has_gui=input("do you want this to be in the teminal (1) or have a gui (2)")
 
 if str(has_gui)=="2":
-    print("hi")
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
 
-while True:
+while str(has_gui) != "2":
     text_input = str(input("Input the string you need to convert here: "))
     print("Modes:\nForce into full upper/lowercase (CASE) \nFlip text upside-down (FLIP)\nConvert text to the Standard Galactic Alphabet, aka Minecraft enchanting table speak (ENCHANT)\nReverse text in a string (REVERSE)\nConvert text to leetspeak (LEETSPEAK)\nRandomly scramble the text (SCRAMBLE)\nAdd Pig Latin to the text (PIGLATIN)\nShift your text into Ceasar Cipher (CAESAR)\nASCII Art your text (ASCII)\nAdd a border to your text (BORDER)\nAdd Zalgo decor to your text (ZALGO)\nConvert text to Morse code (MORSE)\nConvert to binary (BINARY)\nAdd shadows to your text (SHADOW)\nConvert text to emoticons (EMOTICONS)\nExtra modes (EXTRA)\nExit (EXIT)")
     mode = str(input("\nWhich mode would you like to use? "))
