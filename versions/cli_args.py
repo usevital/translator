@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from library.TextConverter import TextConverter
-
+import pyperclip  # Add this import
 
 def main():
     parser = argparse.ArgumentParser(description="Text Converter")
@@ -13,6 +13,7 @@ def main():
     parser.add_argument("--case", choices=['upper', 'lower'], default='upper', help="Case for case_switch")
     parser.add_argument("--filename", default="qr_code", help="Filename for QR code")
     parser.add_argument("--save", action="store_true", help="Save the result to history file")
+    parser.add_argument("--copy", action="store_true", help="Copy the result to clipboard")  # Add this line
 
     args = parser.parse_args()
 
@@ -43,15 +44,21 @@ def main():
     if args.mode in mode_map:
         result = mode_map[args.mode](text)
         if isinstance(result, dict):
-            for key, value in result.items():
-                print(f"{key}: {value}")
+            output = "\n".join(f"{key}: {value}" for key, value in result.items())
         else:
-            print(result)
+            output = str(result)
+        
+        print(output)
         
         # Optionally save the result
         if args.save:
-            converter.save_result(result, args.mode)
+            converter.save_result(output, args.mode)
             print(f"Result saved to {converter.history_files[args.mode]}")
+        
+        # Copy result to clipboard if --copy flag is used
+        if args.copy:
+            pyperclip.copy(output)
+            print("Result copied to clipboard")
     else:
         print(f"Unknown mode: {args.mode}")
 
