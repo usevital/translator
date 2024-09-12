@@ -62,7 +62,7 @@ jobs:
           name: ${{ matrix.os }}_dists
           path: dist/
 
-  release:
+  normal_release:
     name: Draft normal release
     runs-on: ubuntu-latest
     needs: build
