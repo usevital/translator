@@ -263,9 +263,14 @@ def prompt_redo():
 has_gui=input("do you want this to be in the teminal (1) or have a gui (2)")
 
 if str(has_gui)=="2":
+    light_mode=input("do you want the window to be in dark mode? y/n")
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
     programIcon = pygame.image.load('images/icon.ico')
+    if light_mode.capitalize=="Y":
+        screen.fill(255,255,255)
+    if light_mode.capitalize=="N":
+        screen.fill(0,0,0)    
     pygame.display.set_icon(programIcon)
     pygame.display.set_caption('translator')
 
