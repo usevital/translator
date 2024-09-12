@@ -1,4 +1,4 @@
-#import pyperclip
+import pyperclip
 import pygame
 import random
 from art import text2art
@@ -20,7 +20,7 @@ def flipUD(text):
 def reverse_text(text):
     reversed_text = text[::-1]
     print("The result is: ", reversed_text)
-#    pyperclip.copy(reversed_text)
+    pyperclip.copy(reversed_text)
     with open('reverse_history.txt', 'a', encoding="utf-8") as f:
         f.write('\n')
         f.write(reversed_text)
@@ -31,7 +31,7 @@ def reverse_text(text):
 def text_flip(text):
     converted_text = flipUD(text)
     print("The result is: ", converted_text)
-#    pyperclip.copy(converted_text)
+    pyperclip.copy(converted_text)
     with open('flip_history.txt', 'a', encoding="utf-8") as f:
         f.write('\n')
         f.write(converted_text)
@@ -53,7 +53,7 @@ def enchant_text(text):
                     'x', ' ̇/').replace(
                         'X', ' ̇/')
     print("The result is: ", enchanted_text)
-#    pyperclip.copy(enchanted_text)
+    pyperclip.copy(enchanted_text)
     with open('enchant_history.txt', 'a', encoding="utf-8") as f:
         f.write('\n')
         f.write(enchanted_text)
@@ -69,7 +69,7 @@ def case_switch(case, text):
     else:
         print("Something went wrong.")
     print(f"The result is: {converted_text}")
-#    pyperclip.copy(converted_text)
+    pyperclip.copy(converted_text)
     with open('case_history.txt', 'a') as f:
         f.write('\n')
         f.write(converted_text)
@@ -81,7 +81,7 @@ def leetspeak(text):
     leet_dict = {'a': '4', 'e': '3', 'l': '1', 'o': '0', 't': '7'}
     converted_text = ''.join(leet_dict.get(char, char) for char in text.lower())
     print("The result is: ", converted_text)
-#    pyperclip.copy(converted_text)
+    pyperclip.copy(converted_text)
     with open('leetspeak_history.txt', 'a') as f:
         f.write('\n')
         f.write(converted_text)
@@ -92,7 +92,7 @@ def leetspeak(text):
 def scramble_text(text):
     scrambled_text = ''.join(random.sample(text, len(text)))
     print("The result is: ", scrambled_text)
-#    pyperclip.copy(scrambled_text)
+    pyperclip.copy(scrambled_text)
     with open('scramble_history.txt', 'a') as f:
         f.write('\n')
         f.write(scrambled_text)
@@ -107,7 +107,7 @@ def piglatin(text):
     else:
         piglatin_text = text[1:] + text[0] + "ay"
     print("The result is: ", piglatin_text)
-#    pyperclip.copy(piglatin_text)
+    pyperclip.copy(piglatin_text)
     with open('piglatin_history.txt', 'a') as f:
         f.write('\n')
         f.write(piglatin_text)
@@ -125,7 +125,7 @@ def caesar_cipher(text, shift):
             encrypted.append(char)
     encrypted_text = ''.join(encrypted)
     print("The result is: ", encrypted_text)
-#    pyperclip.copy(encrypted_text)
+    pyperclip.copy(encrypted_text)
     with open('caesar_history.txt', 'a') as f:
         f.write('\n')
         f.write(encrypted_text)
@@ -136,7 +136,7 @@ def caesar_cipher(text, shift):
 def ascii_art(text):
     ascii_text = text2art(text)
     print("The result is: ", ascii_text)
-#    pyperclip.copy(ascii_text)
+    pyperclip.copy(ascii_text)
     with open('ascii_history.txt', 'a') as f:
         f.write('\n')
         f.write(ascii_text)
@@ -147,7 +147,7 @@ def ascii_art(text):
 def border_text(text):
     border_text = text2art(text, font='block')
     print("The result is: ", border_text)
-#    pyperclip.copy(border_text)
+    pyperclip.copy(border_text)
     with open('border_history.txt', 'a') as f:
         f.write('\n')
         f.write(border_text)
@@ -160,7 +160,7 @@ def zalgo_text(text):
     zalgo_chars = ['̍', '̎', '̄', '̅', '̿', '̑', '̆', '̐', '͒', '͗', '͑', '̇', '̈', '̊', '͂', '̓', '̈', '͊', '͋', '͌', '̃', '̂', '̌', '͐', '̀', '́', '̋', '̏', '̒', '̓', '̔', '̽', '̉', 'ͣ', 'ͤ', 'ͥ', 'ͦ', 'ͧ', 'ͨ', 'ͩ', 'ͪ', 'ͫ', 'ͬ', 'ͭ', 'ͮ', 'ͯ', '̾', '͛', '͆', '̚']
     zalgo_text = ''.join(random.choice(zalgo_chars) + char for char in text)
     print("The result is: ", zalgo_text)
-#    pyperclip.copy(zalgo_text)
+    pyperclip.copy(zalgo_text)
     with open('zalgo_history.txt', 'a', encoding="utf-8") as f:
         f.write('\n')
         f.write(zalgo_text)
@@ -178,7 +178,7 @@ def morse_code(text):
     }
     morse_code = ' '.join(MORSE_CODE_DICT.get(char.upper(), '') for char in text)
     print("The result is: ", morse_code)
-#    pyperclip.copy(morse_code)
+    pyperclip.copy(morse_code)
     with open('morse_history.txt', 'a') as f:
         f.write('\n')
         f.write(morse_code)
@@ -189,7 +189,7 @@ def morse_code(text):
 def binary_text(text):
     binary_text = ' '.join(format(ord(char), '08b') for char in text)
     print("The result is: ", binary_text)
-#    pyperclip.copy(binary_text)
+    pyperclip.copy(binary_text)
     with open('binary_history.txt', 'a') as f:
         f.write('\n')
         f.write(binary_text)
@@ -201,7 +201,7 @@ def text_shadow(text):
     shadow = '\n'.join(' ' * offset + line for line in text.split('\n'))
     shadowed_text =  f"{text}\n{shadow}"
     print("The result is: ", shadowed_text)
-#    pyperclip.copy(shadowed_text)
+    pyperclip.copy(shadowed_text)
     with open('shadow_history.txt', 'a') as f:
         f.write('\n')
         f.write(shadowed_text)
@@ -236,7 +236,7 @@ def text_to_emoticons(text):
     words = text.split()
     emojis = ' '.join(emoticon_dict.get(word.lower(), word) for word in words)
     print("The result is: ", emojis)
-#    pyperclip.copy(emojis)
+    pyperclip.copy(emojis)
     with open('emoticons_history.txt', 'a') as f:
         f.write('\n')
         f.write(emojis)
