@@ -33,6 +33,12 @@ jobs:
               with:
                 python-version: 3.11
 
+            - name: Install SDL2
+              uses: libsdl-org/setup-sdl@main
+              with:
+                install-linux-dependencies: true
+                version: 2-latest
+
             - name: Install requirements
               run: |
                 pip install -r requirements.txt
