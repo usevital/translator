@@ -1,3 +1,4 @@
 pyperclip==1.9.0
 art==6.2
 qrcode==7.4.2
+pygame==2.0.3
