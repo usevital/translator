@@ -106,7 +106,6 @@ def main():
         elif choice == '16':
             filename = input("Enter the filename for the QR code: ")
             result = converter.qr_code(text, filename)
-            print(result)
             mode = 'qr'
         elif choice == '17':
             result = converter.text_to_emoticons(text)
@@ -132,7 +131,7 @@ def main():
                 else:
                     copy_to_clipboard(result)
 
-        if mode:
+        if mode != 'qr':
             save_choice = input("Do you want to save the result to a history file? (y/n): ").lower()
             if save_choice == 'y':
                 save_message = converter.save_result(result, mode)
