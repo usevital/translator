@@ -265,6 +265,8 @@ has_gui=input("do you want this to be in the teminal (1) or have a gui (2)")
 if str(has_gui)=="2":
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
+    programIcon = pygame.image.load('images/icon.ico')
+    pygame.display.set_icon(programIcon)
 
 while str(has_gui) != "2":
     text_input = str(input("Input the string you need to convert here: "))
