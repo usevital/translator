@@ -12,3 +12,5 @@ This script was originally made for [NotEssential](https://notessential.blurry.g
 - Translations to the Standard Galactic Alphabet (by [ThinkSeal](https://github.com/ThinkSeal))
 
 ...and more coming soon (maybe)!
+
+Want to try this project but don't want to download someething? Try [ward](https://ward.worldwidepixel.ca)
