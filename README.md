@@ -20,8 +20,8 @@ This script was originally made for [NotEssential](https://notessential.blurry.g
 - Convert to -- --- .-. ... .  -.-. --- -.. . (Morse code)
 - Convert to 01000010 01101001 01101110 01100001 01110010 01111001 (Binary)
 - Add text shadows
-- Convert to Emoticons
-- Convert to QR codes
+- Convert ➡️ Emoticons
+- Convert to [QR codes](./images/qr-code.png)
 - Counts your words, characters, and more :nerd_face:
 
 ...and more coming soon (maybe)!
