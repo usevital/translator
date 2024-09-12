@@ -267,6 +267,7 @@ if str(has_gui)=="2":
     screen = pygame.display.set_mode((1280, 720))
     programIcon = pygame.image.load('images/icon.ico')
     pygame.display.set_icon(programIcon)
+    pygame.display.set_caption('translator')
 
 while str(has_gui) != "2":
     text_input = str(input("Input the string you need to convert here: "))
