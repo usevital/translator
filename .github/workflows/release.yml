@@ -32,7 +32,7 @@ jobs:
           pip install pyinstaller
 
       - name: PyInstaller (Terminal GUI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_window.py
+        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py
 
       - name: List dist directory
         run: ls -R dist
@@ -47,7 +47,7 @@ jobs:
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
           cd dist
-          mv terminal_window ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
+          mv terminal_gui ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
           mv cli_args ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
 
       - name: Upload debug builds

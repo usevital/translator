@@ -39,7 +39,7 @@ jobs:
                 pip install pyinstaller
 
             - name: PyInstaller (Terminal GUI)
-              run: pyinstaller --icon=images/icon.ico versions/terminal_window.py
+              run: pyinstaller --icon=images/icon.ico versions/terminal_gui.py
 
             - name: PyInstaller (CLI)
               run: pyinstaller --icon=images/icon.ico versions/cli_args.py
