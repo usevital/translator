@@ -1,5 +1,12 @@
-from library.TextConverter import TextConverter
 import pyperclip
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from library.TextConverter import TextConverter
+
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def print_menu():
@@ -91,6 +98,8 @@ def main():
             mode = 'shadow'
         elif choice == '15':
             converter.scroll_text(text)
+            input("\nPress any key to continue...")
+            clear_screen()
             continue
         elif choice == '16':
             filename = input("Enter the filename for the QR code: ")
@@ -116,7 +125,6 @@ def main():
                 copy_to_clipboard(str(result))
             else:
                 copy_to_clipboard(result)
-            print("Result copied to clipboard!")
 
         if mode:
             save_choice = input("Do you want to save the result to a history file? (y/n): ").lower()
@@ -124,7 +132,9 @@ def main():
                 save_message = converter.save_result(result, mode)
                 print(save_message)
 
-        input("\nPress Enter to continue...")
+        input("\nPress any key to continue...")
+        clear_screen()
+
 
 if __name__ == "__main__":
     main()

@@ -132,7 +132,30 @@ class TextConverter:
         return f"QR code saved as {file_path}"
 
     def text_to_emoticons(self, text):
-        emoticon_dict = {'hello': '👋', 'world': '🌍'}
+        emoticon_dict = {
+            'hello': '👋', 'world': '🌍', 'love': '❤️', 'happy': '😊', 'sad': '😢',
+            'laugh': '😂', 'smile': '😃', 'angry': '😠', 'cool': '😎', 'sun': '☀️',
+            'moon': '🌙', 'star': '⭐', 'food': '🍔', 'drink': '🍹', 'music': '🎵',
+            'book': '📚', 'computer': '💻', 'phone': '📱', 'car': '🚗', 'house': '🏠',
+            'tree': '🌳', 'flower': '🌸', 'dog': '🐶', 'cat': '🐱', 'bird': '🐦',
+            'fish': '🐠', 'heart': '❤️', 'fire': '🔥', 'water': '💧', 'earth': '🌎',
+            'air': '💨', 'time': '⏰', 'money': '💰', 'work': '💼', 'sleep': '😴',
+            'party': '🎉', 'gift': '🎁', 'camera': '📷', 'movie': '🎬', 'music': '🎵',
+            'sport': '⚽', 'win': '🏆', 'yes': '👍', 'no': '👎', 'ok': '👌',
+            'hello': '👋', 'bye': '👋', 'please': '🙏', 'thanks': '🙏', 'sorry': '😔',
+            'wow': '😮', 'omg': '😱', 'lol': '😂', 'idea': '💡', 'question': '❓',
+            'answer': '✅', 'warning': '⚠️', 'stop': '🛑', 'go': '🚦', 'fast': '⚡',
+            'slow': '🐌', 'up': '⬆️', 'down': '⬇️', 'left': '⬅️', 'right': '➡️',
+            'back': '🔙', 'soon': '🔜', 'new': '🆕', 'free': '🆓', 'hot': '🔥',
+            'cold': '❄️', 'big': '🐘', 'small': '🐜', 'loud': '📢', 'quiet': '🤫',
+            'good': '👍', 'bad': '👎', 'sick': '🤒', 'healthy': '💪', 'smart': '🧠',
+            'crazy': '🤪', 'king': '👑', 'queen': '👸', 'baby': '👶', 'ghost': '👻',
+            'alien': '👽', 'robot': '🤖', 'rainbow': '🌈', 'unicorn': '🦄', 'pizza': '🍕',
+            'beer': '🍺', 'wine': '🍷', 'coffee': '☕', 'tea': '🍵', 'cake': '🎂',
+            'balloon': '🎈', 'rocket': '🚀', 'airplane': '✈️', 'train': '🚂', 'boat': '⛵',
+            'beach': '🏖️', 'mountain': '⛰️', 'camping': '⛺', 'fire': '🔥', 'snow': '❄️',
+            'rain': '🌧️', 'wind': '💨', 'cloud': '☁️', 'thunder': '⚡', 'rainbow': '🌈'
+        }
         words = text.split()
         return ' '.join(emoticon_dict.get(word.lower(), word) for word in words)
 
@@ -141,7 +164,9 @@ class TextConverter:
         char_count = len(text)
         char_frequency = Counter(text)
         return {
+            "Text": text,
             "Word Count": word_count,
             "Character Count": char_count,
-            "Character Frequency": dict(char_frequency)
+            "Character Frequency": dict(char_frequency),
+            "Nerd emoji": "🤓"
         }
