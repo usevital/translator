@@ -28,28 +28,6 @@ jobs:
               with:
                 fetch-depth: 2
 
-            - name: Detect changed files
-              id: changed-files
-              run: |
-                echo "Changed files:"
-                git diff --name-only HEAD^ HEAD
-
-                if git diff --name-only HEAD^ HEAD | grep -qE '^(\.github/workflows/build\.yml|requirements\.txt|images/icon\.ico|library/TextConverter\.py)$'; then
-                  echo "common_files_changed=true" >> $GITHUB_OUTPUT
-                fi
-
-                if git diff --name-only HEAD^ HEAD | grep -q '^versions/terminal_window\.py$'; then
-                  echo "terminal_gui_changed=true" >> $GITHUB_OUTPUT
-                else
-                  echo "cli_changed=true" >> $GITHUB_OUTPUT
-                fi
-
-                if git diff --name-only HEAD^ HEAD | grep -q '^versions/cli_args\.py$'; then
-                  echo "cli_changed=true" >> $GITHUB_OUTPUT
-                else
-                  echo "terminal_gui_changed=true" >> $GITHUB_OUTPUT
-                fi
-
             - name: Setup Python
               uses: actions/setup-python@v5
               with:
@@ -61,11 +39,9 @@ jobs:
                 pip install pyinstaller
 
             - name: PyInstaller (Terminal GUI)
-              if: steps.changed-files.outputs.terminal_gui_changed == 'true' || steps.changed-files.outputs.common_files_changed == 'true'
               run: pyinstaller --icon=images/icon.ico versions/terminal_window.py
 
             - name: PyInstaller (CLI)
-              if: steps.changed-files.outputs.cli_changed == 'true' || steps.changed-files.outputs.common_files_changed == 'true'
               run: pyinstaller --icon=images/icon.ico versions/cli_args.py
 
             - name: Upload Builds
