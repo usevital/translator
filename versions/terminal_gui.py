@@ -3,6 +3,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from library.TextConverter import TextConverter
+from PIL import Image
+import io
 
 
 def clear_screen():
@@ -104,11 +106,14 @@ def main():
         elif choice == '16':
             filename = input("Enter the filename for the QR code: ")
             result = converter.qr_code(text, filename)
+            print(result)
+            mode = 'qr'
         elif choice == '17':
             result = converter.text_to_emoticons(text)
             mode = 'emoticons'
         elif choice == '18':
             result = converter.nerd_mode(text)
+            mode = 'nerd'
         else:
             print("Invalid choice. Please try again.")
             continue
@@ -119,12 +124,13 @@ def main():
         elif result:
             print(result)
 
-        copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
-        if copy_choice == 'y':
-            if isinstance(result, dict):
-                copy_to_clipboard(str(result))
-            else:
-                copy_to_clipboard(result)
+        if mode != 'qr':
+            copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
+            if copy_choice == 'y':
+                if isinstance(result, dict):
+                    copy_to_clipboard(str(result))
+                else:
+                    copy_to_clipboard(result)
 
         if mode:
             save_choice = input("Do you want to save the result to a history file? (y/n): ").lower()
