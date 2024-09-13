@@ -1,16 +1,11 @@
-import random
-from art import text2art
-import sys
-import time
-import qrcode
-import barcode
-from barcode.writer import ImageWriter
-from collections import Counter
+import wave
+import struct
 import os
-from pydub import AudioSegment
-from pydub.generators import Sine
-import simpleaudio as sa
-
+import subprocess
+import sys
+import tempfile
+import audioread
+import soundfile as sf
 
 class TextConverter:
     def __init__(self):
@@ -230,41 +225,58 @@ class TextConverter:
             '8': '---..', '9': '----.'
         }
 
-        dot_duration = 60  # milliseconds
+        def generate_sine_wave(freq, duration, volume=1.0, sample_rate=44100):
+            num_samples = int(sample_rate * duration)
+            samples = [int(volume * 32767 * struct.sin(2 * struct.pi * freq * t / sample_rate))
+                       for t in range(num_samples)]
+            return samples
+
+        dot_duration = 0.1
         dash_duration = dot_duration * 3
-        freq = 800  # Hz
+        freq = 800
 
-        dot_sound = Sine(freq).to_audio_segment(duration=dot_duration)
-        dash_sound = Sine(freq).to_audio_segment(duration=dash_duration)
-        symbol_space = AudioSegment.silent(duration=dot_duration)
-        letter_space = AudioSegment.silent(duration=dash_duration)
-        word_space = AudioSegment.silent(duration=dot_duration * 7)
+        dot = generate_sine_wave(freq, dot_duration)
+        dash = generate_sine_wave(freq, dash_duration)
+        short_gap = [0] * int(44100 * dot_duration)
+        medium_gap = [0] * int(44100 * dash_duration)
+        long_gap = [0] * int(44100 * dot_duration * 7)
 
-        morse_audio = AudioSegment.empty()
-
+        morse_audio = []
         for char in text.upper():
             if char == ' ':
-                morse_audio += word_space
+                morse_audio.extend(long_gap)
             elif char in MORSE_CODE_DICT:
                 for symbol in MORSE_CODE_DICT[char]:
-                    if symbol == '.':
-                        morse_audio += dot_sound
-                    elif symbol == '-':
-                        morse_audio += dash_sound
-                    morse_audio += symbol_space
-                morse_audio += letter_space
+                    morse_audio.extend(dot if symbol == '.' else dash)
+                    morse_audio.extend(short_gap)
+                morse_audio.extend(medium_gap)
 
-        temp_file = os.path.join(self.history_folder, "temp_morse_audio.wav")
-        morse_audio.export(temp_file, format="wav")
+        # Create a temporary WAV file
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_wav:
+            temp_wav_path = temp_wav.name
+            with wave.open(temp_wav_path, 'w') as wav_file:
+                wav_file.setnchannels(1)
+                wav_file.setsampwidth(2)
+                wav_file.setframerate(44100)
+                wav_file.writeframes(struct.pack('<' + 'h' * len(morse_audio), *morse_audio))
 
-        # Play the audio
-        wave_obj = sa.WaveObject.from_wave_file(temp_file)
-        play_obj = wave_obj.play()
-        play_obj.wait_done()
-
-        os.remove(temp_file)  # Remove the temporary WAV file
-
+        # Convert WAV to MP3
         output_file = os.path.join(self.history_folder, self.history_files['morse_sound'])
-        morse_audio.export(output_file, format="mp3")
+        with audioread.audio_open(temp_wav_path) as audio_file:
+            sf.write(output_file, audio_file.read_data(), audio_file.samplerate, format='mp3')
+
+        # Clean up the temporary WAV file
+        os.unlink(temp_wav_path)
+
+        # Play the audio using the system's default player
+        if sys.platform == 'win32':  # Windows
+            os.startfile(output_file)
+        elif sys.platform == 'darwin':  # macOS
+            subprocess.call(['open', output_file])
+        else:  # Linux and other Unix-like
+            subprocess.call(['xdg-open', output_file])
+
+        print(f"Playing Morse code audio for: {text}")
+        input("Press Enter when you're done listening...")
 
         return output_file
