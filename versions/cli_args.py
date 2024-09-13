@@ -1,9 +1,10 @@
 import argparse
 import sys
 import os
+import pyperclip
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from library.TextConverter import TextConverter
-import pyperclip
+
 
 def read_file(file_path):
     try:
@@ -15,6 +16,7 @@ def read_file(file_path):
     except IOError:
         print(f"Error: Unable to read file '{file_path}'.")
         sys.exit(1)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Text Converter")
@@ -90,6 +92,7 @@ def main():
             print("Result copied to clipboard")
     else:
         print(f"Unknown mode: {args.mode}")
+
 
 if __name__ == "__main__":
     main()

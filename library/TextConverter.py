@@ -7,6 +7,7 @@ import tempfile
 import audioread
 import soundfile as sf
 
+
 class TextConverter:
     def __init__(self):
         self.history_folder = "conversion-history"
@@ -137,12 +138,12 @@ class TextConverter:
             default_filename = "barcode"
         else:
             raise ValueError("Invalid code type. Must be 'qr' or 'barcode'.")
-        
+
         if filename is None:
             filename = default_filename
-        
+
         file_path = os.path.join(folder, f"{filename}.png")
-        
+
         if code_type == 'qr':
             qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
             qr.add_data(text)
@@ -153,7 +154,7 @@ class TextConverter:
             EAN = barcode.get_barcode_class('code128')
             ean = EAN(text, writer=ImageWriter())
             ean.save(file_path.replace('.png', ''))
-        
+
         return f"{code_type.upper()} code saved as {file_path}"
 
     def text_to_emoticons(self, text):
@@ -205,7 +206,7 @@ class TextConverter:
             ' ': ' ', '.': '⠲', ',': '⠂', '?': '⠦', '!': '⠖', "'": '⠄', '"': '⠐⠂', '-': '⠤', '@': '⠜'
         }
         return ''.join(braille_dict.get(char.lower(), char) for char in text)
-    
+
     def pigpen_mode(self, text):
         pigpen_dict = {
             'A': '⍁', 'B': '⍂', 'C': '⍃', 'D': '⍄', 'E': '⍅', 'F': '⍆', 'G': '⍇', 'H': '⍈', 'I': '⍉',
