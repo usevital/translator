@@ -30,7 +30,10 @@ Example: `--mode case --case lower "Hello World!"`
 
 ...and more coming soon (maybe)!
 
-The scripts also do allow you to do the following (CLI users can append these args to the above):
+The scripts also allow you to do the following:
+
+- Read input from a file instead of command line [--file [path_to_file]]
+  Example: `python versions/cli_args.py --mode reverse --file hello.txt --save`
 
 - Save the result into conversion-history/{mode}_history.txt [--save]
   
@@ -39,3 +42,5 @@ The scripts also do allow you to do the following (CLI users can append these ar
   For Morse code audio, the MP3 file is saved in conversion-history/ and you'll be asked if you want to keep it after playing.
   
 - Copy the result to clipboard (not supported by QR code, barcode, or Morse sound modes) [--copy]
+
+Note: When using --file, the --text argument should not be used. The content of the file will be used as input for the conversion.
