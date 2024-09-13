@@ -7,6 +7,9 @@ import barcode
 from barcode.writer import ImageWriter
 from collections import Counter
 import os
+from pydub import AudioSegment
+from pydub.generators import Sine
+import simpleaudio as sa
 
 
 class TextConverter:
@@ -34,6 +37,7 @@ class TextConverter:
             'emoticons': 'emoticons_history.txt',
             'braille': 'braille_history.txt',
             'barcode': 'barcode_history.txt',
+            'morse_sound': 'morse_audio.mp3',
         }
 
     def save_result(self, result, mode):
@@ -206,3 +210,61 @@ class TextConverter:
             ' ': ' ', '.': '⠲', ',': '⠂', '?': '⠦', '!': '⠖', "'": '⠄', '"': '⠐⠂', '-': '⠤', '@': '⠜'
         }
         return ''.join(braille_dict.get(char.lower(), char) for char in text)
+    
+    def pigpen_mode(self, text):
+        pigpen_dict = {
+            'A': '⍁', 'B': '⍂', 'C': '⍃', 'D': '⍄', 'E': '⍅', 'F': '⍆', 'G': '⍇', 'H': '⍈', 'I': '⍉',
+            'J': '⍊', 'K': '⍋', 'L': '⍌', 'M': '⍍', 'N': '⍎', 'O': '⍏', 'P': '⍐', 'Q': '⍑', 'R': '⍒',
+            'S': '⍓', 'T': '⍔', 'U': '⍕', 'V': '⍖', 'W': '⍗', 'X': '⍘', 'Y': '⍙', 'Z': '⍚'
+        }
+        return ''.join(pigpen_dict.get(char.upper(), char) for char in text)
+
+    def morse_code_audio(self, text):
+        MORSE_CODE_DICT = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+            '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+            '8': '---..', '9': '----.'
+        }
+
+        dot_duration = 60  # milliseconds
+        dash_duration = dot_duration * 3
+        freq = 800  # Hz
+
+        dot_sound = Sine(freq).to_audio_segment(duration=dot_duration)
+        dash_sound = Sine(freq).to_audio_segment(duration=dash_duration)
+        symbol_space = AudioSegment.silent(duration=dot_duration)
+        letter_space = AudioSegment.silent(duration=dash_duration)
+        word_space = AudioSegment.silent(duration=dot_duration * 7)
+
+        morse_audio = AudioSegment.empty()
+
+        for char in text.upper():
+            if char == ' ':
+                morse_audio += word_space
+            elif char in MORSE_CODE_DICT:
+                for symbol in MORSE_CODE_DICT[char]:
+                    if symbol == '.':
+                        morse_audio += dot_sound
+                    elif symbol == '-':
+                        morse_audio += dash_sound
+                    morse_audio += symbol_space
+                morse_audio += letter_space
+
+        temp_file = os.path.join(self.history_folder, "temp_morse_audio.wav")
+        morse_audio.export(temp_file, format="wav")
+
+        # Play the audio
+        wave_obj = sa.WaveObject.from_wave_file(temp_file)
+        play_obj = wave_obj.play()
+        play_obj.wait_done()
+
+        os.remove(temp_file)  # Remove the temporary WAV file
+
+        output_file = os.path.join(self.history_folder, self.history_files['morse_sound'])
+        morse_audio.export(output_file, format="mp3")
+
+        return output_file

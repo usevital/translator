@@ -30,6 +30,7 @@ def print_menu():
     print("17. Text to emoticons")
     print("18. Nerd mode")
     print("19. Convert to Braille")
+    print("20. Convert to Pigpen")
     print("0. Exit")
 
 
@@ -91,6 +92,10 @@ def main():
         elif choice == '12':
             result = converter.morse_code(text)
             mode = 'morse'
+            play_sound = input("Do you want to generate and play the Morse code sound? (y/n): ").lower()
+            if play_sound == 'y':
+                audio_result = converter.morse_code_audio(text)
+                print(audio_result)
         elif choice == '13':
             result = converter.binary_text(text)
             mode = 'binary'
@@ -126,7 +131,7 @@ def main():
         elif result:
             print(result)
 
-        if mode != 'qr' and mode != 'barcode':
+        if mode not in ['qr', 'barcode']:
             copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
             if copy_choice == 'y':
                 if isinstance(result, dict):
@@ -134,7 +139,6 @@ def main():
                 else:
                     copy_to_clipboard(result)
 
-        if mode != 'qr' and mode != 'barcode':
             save_choice = input("Do you want to save the result to a history file? (y/n): ").lower()
             if save_choice == 'y':
                 save_message = converter.save_result(result, mode)

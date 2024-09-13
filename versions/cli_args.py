@@ -33,6 +33,7 @@ def main():
         "border": converter.border_text,
         "zalgo": converter.zalgo_text,
         "morse": converter.morse_code,
+        "morse_sound": converter.morse_code_audio,
         "binary": converter.binary_text,
         "shadow": converter.text_shadow,
         "emoticons": converter.text_to_emoticons,
@@ -40,26 +41,34 @@ def main():
         "scroll": converter.scroll_text,
         "qr": lambda t: converter.generate_code(t, 'qr', args.filename),
         "barcode": lambda t: converter.generate_code(t, 'barcode', args.filename),
-        "braille": converter.text_to_braille
+        "braille": converter.text_to_braille,
+        "pigpen": converter.pigpen_mode
     }
 
     if args.mode in mode_map:
         result = mode_map[args.mode](text)
-        if isinstance(result, dict):
-            output = "\n".join(f"{key}: {value}" for key, value in result.items())
-        else:
-            output = str(result)
         
-        print(output)
+        if args.mode == "morse_sound":
+            print("Morse code audio played.")
+            save_audio = input("Do you want to save the audio file? (y/n): ").lower().strip()
+            if save_audio == 'y':
+                print(f"Audio saved as {result}")
+            else:
+                print("Audio file not saved.")
+        elif isinstance(result, dict):
+            output = "\n".join(f"{key}: {value}" for key, value in result.items())
+            print(output)
+        else:
+            print(result)
         
         # Optionally save the result
-        if args.save:
-            converter.save_result(output, args.mode)
+        if args.save and args.mode != "morse_sound":
+            converter.save_result(result, args.mode)
             print(f"Result saved to {converter.history_files[args.mode]}")
         
-        # Copy result to clipboard if --copy flag is used and mode is not 'qr' or 'barcode'
-        if args.copy and args.mode not in ['qr', 'barcode']:
-            pyperclip.copy(output)
+        # Copy result to clipboard if --copy flag is used and mode is not 'qr', 'barcode', or 'morse_sound'
+        if args.copy and args.mode not in ['qr', 'barcode', 'morse_sound']:
+            pyperclip.copy(str(result))
             print("Result copied to clipboard")
     else:
         print(f"Unknown mode: {args.mode}")
