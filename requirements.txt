@@ -3,3 +3,4 @@ art==6.2
 qrcode==7.4.2
 argparse==1.4.0
 pillow==10.4.0
+pygame==2.0.3
