@@ -120,7 +120,6 @@ def main():
                 print(f"{key}: {value}")
         elif result:
             print(result)
-
         if mode != 'qr':
             copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
             if copy_choice == 'y':

@@ -13,7 +13,7 @@ def main():
     parser.add_argument("--case", choices=['upper', 'lower'], default='upper', help="Case for case_switch")
     parser.add_argument("--save", action="store_true", help="Save the result to history file")
     parser.add_argument("--copy", action="store_true", help="Copy the result to clipboard")
-    parser.add_argument("--filename", help="Filename for QR code")
+    parser.add_argument("--filename", default="qr_code", help="Filename for QR code")
 
     args = parser.parse_args()
 
