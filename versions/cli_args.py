@@ -13,7 +13,7 @@ def main():
     parser.add_argument("--case", choices=['upper', 'lower'], default='upper', help="Case for case_switch")
     parser.add_argument("--save", action="store_true", help="Save the result to history file")
     parser.add_argument("--copy", action="store_true", help="Copy the result to clipboard")
-    parser.add_argument("--filename", help="Filename for QR code")
+    parser.add_argument("--filename", help="Filename for QR code or barcode")
 
     args = parser.parse_args()
 
@@ -38,7 +38,9 @@ def main():
         "emoticons": converter.text_to_emoticons,
         "nerd": converter.nerd_mode,
         "scroll": converter.scroll_text,
-        "qr": lambda t: converter.qr_code(t, args.filename)
+        "qr": lambda t: converter.generate_code(t, 'qr', args.filename),
+        "barcode": lambda t: converter.generate_code(t, 'barcode', args.filename),
+        "braille": converter.text_to_braille
     }
 
     if args.mode in mode_map:
@@ -55,8 +57,8 @@ def main():
             converter.save_result(output, args.mode)
             print(f"Result saved to {converter.history_files[args.mode]}")
         
-        # Copy result to clipboard if --copy flag is used and mode is not 'qr'
-        if args.copy and args.mode != 'qr':
+        # Copy result to clipboard if --copy flag is used and mode is not 'qr' or 'barcode'
+        if args.copy and args.mode not in ['qr', 'barcode']:
             pyperclip.copy(output)
             print("Result copied to clipboard")
     else:
