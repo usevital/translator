@@ -104,11 +104,13 @@ def main():
         elif choice == '16':
             filename = input("Enter the filename for the QR code: ")
             result = converter.qr_code(text, filename)
+            mode = 'qr'
         elif choice == '17':
             result = converter.text_to_emoticons(text)
             mode = 'emoticons'
         elif choice == '18':
             result = converter.nerd_mode(text)
+            mode = 'nerd'
         else:
             print("Invalid choice. Please try again.")
             continue
@@ -118,15 +120,15 @@ def main():
                 print(f"{key}: {value}")
         elif result:
             print(result)
+        if mode != 'qr':
+            copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
+            if copy_choice == 'y':
+                if isinstance(result, dict):
+                    copy_to_clipboard(str(result))
+                else:
+                    copy_to_clipboard(result)
 
-        copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
-        if copy_choice == 'y':
-            if isinstance(result, dict):
-                copy_to_clipboard(str(result))
-            else:
-                copy_to_clipboard(result)
-
-        if mode:
+        if mode != 'qr':
             save_choice = input("Do you want to save the result to a history file? (y/n): ").lower()
             if save_choice == 'y':
                 save_message = converter.save_result(result, mode)
