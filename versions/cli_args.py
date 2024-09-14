@@ -33,7 +33,7 @@ def main():
     args = parser.parse_args()
 
     converter = TextConverter()
-    
+
     if args.file:
         text = read_file(args.file)
     else:
@@ -66,7 +66,7 @@ def main():
 
     if args.mode in mode_map:
         result = mode_map[args.mode](text)
-        
+
         if args.mode == "morse_sound":
             print("Morse code audio played.")
             save_audio = input("Do you want to keep the audio file? (y/n): ").lower().strip()
@@ -80,12 +80,12 @@ def main():
             print(output)
         else:
             print(result)
-        
+   
         # Optionally save the result
         if args.save and args.mode not in ["morse_sound", "qr", "barcode"]:
             converter.save_result(result, args.mode)
             print(f"Result saved to {converter.history_files[args.mode]}")
-        
+
         # Copy result to clipboard if --copy flag is used and mode is not 'qr', 'barcode', or 'morse_sound'
         if args.copy and args.mode not in ['qr', 'barcode', 'morse_sound']:
             pyperclip.copy(str(result))

@@ -44,7 +44,7 @@ def main():
 
     while True:
         print_menu()
-        choice = input("Enter your choice (0-19): ")
+        choice = input("Enter your choice (0-20): ")
 
         if choice == '0':
             print("Thank you for using Text Converter. Goodbye!")
