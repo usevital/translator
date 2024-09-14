@@ -22,7 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description="Text Converter")
     parser.add_argument("--mode", required=True, help="Conversion mode")
     input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument("--text", nargs="+", help="Text to convert")
+    input_group.add_argument("text", nargs="?", help="Text to convert (in quotes)")
     input_group.add_argument("--file", help="Path to input file")
     parser.add_argument("--shift", type=int, default=3, help="Shift for Caesar cipher")
     parser.add_argument("--case", choices=['upper', 'lower'], default='upper', help="Case for case_switch")
@@ -36,8 +36,10 @@ def main():
 
     if args.file:
         text = read_file(args.file)
+    elif args.text:
+        text = args.text
     else:
-        text = " ".join(args.text)
+        parser.error("Either 'text' or '--file' must be provided.")
 
     mode_map = {
         "reverse": converter.reverse_text,

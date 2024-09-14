@@ -21,7 +21,14 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+              os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+              include:
+                - os: windows-latest
+                  short_os: win
+                - os: macos-latest
+                  short_os: mac
+                - os: ubuntu-latest
+                  short_os: linux
         steps:
             - name: Checkout ref
               uses: actions/checkout@v4
@@ -39,10 +46,10 @@ jobs:
                 pip install pyinstaller
 
             - name: PyInstaller (Terminal GUI)
-              run: pyinstaller --icon=images/icon.ico versions/terminal_gui.py
+              run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_translator_cmdgui_${{ github.ref_name }}
 
             - name: PyInstaller (CLI)
-              run: pyinstaller --icon=images/icon.ico versions/cli_args.py
+              run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.short_os }}_translator-cli_${{ github.ref_name }}
 
             - name: Upload Builds
               uses: actions/upload-artifact@v4

@@ -1,6 +1,8 @@
 # Features
 
-To use these as args in CLI, input `--mode` then the arg in [square brackets] next to the feature you want to use.
+To use these as args in CLI, input `--mode` then the arg in [square brackets] next to the feature you want to use. You can also input `-h` in the CLI to get a list of all the features.
+
+The string you want to convert should in inputted with quotation marks around them.
 
 Example: `--mode case --case lower "Hello World!"`
 

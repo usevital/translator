@@ -17,6 +17,13 @@ jobs:
     strategy:
       matrix:
         os: ["windows-latest", "macos-latest", "ubuntu-latest"]
+        include:
+          - os: windows-latest
+            short_os: win
+          - os: macos-latest
+            short_os: mac
+          - os: ubuntu-latest
+            short_os: linux
     steps:
       - name: Checkout ref
         uses: actions/checkout@v4
@@ -32,23 +39,10 @@ jobs:
           pip install pyinstaller
 
       - name: PyInstaller (Terminal GUI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py
+        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_translator_cmdgui_${{ github.ref_name }}
 
-      - name: List dist directory
-        run: ls -R dist
-      
       - name: PyInstaller (CLI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py
-
-      - name: List dist directory
-        run: ls -R dist
-
-      - name: Rename artifacts on Mac & Linux first
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: |
-          cd dist
-          mv terminal_gui ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
-          mv cli_args ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
+        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.short_os }}_translator-cli_${{ github.ref_name }}
 
       - name: Upload debug builds
         uses: actions/upload-artifact@v4
@@ -89,19 +83,13 @@ jobs:
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
-      - name: Rename Windows artifacts
-        run: |
-          cd release-artifacts
-          mv terminal_gui.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
-          mv cli_args.exe windows-latest_${{ github.ref_name }}_cmdline-release.exe
-
       - name: Draft normal release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_*-release*
+          artifacts: release-artifacts/*_translator*_${{ github.ref_name }}*
           draft: true
           name: "Release ${{ github.ref_name }}"
           body: "If you're using the CLI, we recommend renaming the artifact to something shorter, like 'translator-CLI'."
@@ -144,7 +132,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cmdgui-release*
+          artifacts: release-artifacts/*_translator_cmdgui*_${{ github.ref_name }}*
           draft: true
           name: "CMDGUI Release ${{ github.ref_name }}"
           body: "This is a CMDGUI-specific release."
@@ -187,7 +175,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cmdline-release*
+          artifacts: release-artifacts/*_translator-cli*_${{ github.ref_name }}*
           draft: true
           name: "CLI Release ${{ github.ref_name }}"
           body: "This is a CLI-specific release. We recommend renaming the artifact to something shorter, like 'translator-CLI'."
