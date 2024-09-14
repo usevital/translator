@@ -71,19 +71,19 @@ jobs:
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
-          name: windows-latest_dist
+          name: windows-latest_dists
           path: release-artifacts
 
       - name: Download MacOS artifact
         uses: actions/download-artifact@v4
         with:
-          name: macos-latest_dist
+          name: macos-latest_dists
           path: release-artifacts
 
       - name: Download Linux artifact
         uses: actions/download-artifact@v4
         with:
-          name: ubuntu-latest_dist
+          name: ubuntu-latest_dists
           path: release-artifacts
 
       - name: List release-artifacts directory # debug
