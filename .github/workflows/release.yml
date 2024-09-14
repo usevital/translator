@@ -190,4 +190,4 @@ jobs:
           artifacts: release-artifacts/*_${{ github.ref_name }}_cmdline-release*
           draft: true
           name: "CLI Release ${{ github.ref_name }}"
-          body: "This is a CLI-specific release."
+          body: "This is a CLI-specific release. We recommend renaming the artifact to something shorter, like 'translator-CLI'."
