@@ -1,16 +1,20 @@
-import random
-from art import text2art
-import sys
-import time
-import qrcode
-from collections import Counter
+import wave
+import struct
 import os
+import subprocess
+import sys
+import tempfile
+import audioread
+import soundfile as sf
 
 
 class TextConverter:
     def __init__(self):
         self.history_folder = "conversion-history"
-        os.makedirs(self.history_folder, exist_ok=True)
+        self.qr_folder = os.path.join(self.history_folder, "qr_codes")
+        self.barcode_folder = os.path.join(self.history_folder, "barcodes")
+        os.makedirs(self.qr_folder, exist_ok=True)
+        os.makedirs(self.barcode_folder, exist_ok=True)
         self.history_files = {
             'reverse': 'reverse_history.txt',
             'flip': 'flip_history.txt',
@@ -27,6 +31,9 @@ class TextConverter:
             'binary': 'binary_history.txt',
             'shadow': 'shadow_history.txt',
             'emoticons': 'emoticons_history.txt',
+            'braille': 'braille_history.txt',
+            'barcode': 'barcode_history.txt',
+            'morse_sound': 'morse_audio.mp3',
         }
 
     def save_result(self, result, mode):
@@ -122,14 +129,33 @@ class TextConverter:
             time.sleep(delay)
         print()
 
-    def qr_code(self, text, filename):
-        qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
-        qr.add_data(text)
-        qr.make(fit=True)
-        img = qr.make_image(fill='black', back_color='white')
-        file_path = os.path.join(self.history_folder, f"{filename}.png")
-        img.save(file_path)
-        return f"QR code saved as {file_path}"
+    def generate_code(self, text, code_type, filename=None):
+        if code_type == 'qr':
+            folder = self.qr_folder
+            default_filename = "qr_code"
+        elif code_type == 'barcode':
+            folder = self.barcode_folder
+            default_filename = "barcode"
+        else:
+            raise ValueError("Invalid code type. Must be 'qr' or 'barcode'.")
+
+        if filename is None:
+            filename = default_filename
+
+        file_path = os.path.join(folder, f"{filename}.png")
+
+        if code_type == 'qr':
+            qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+            qr.add_data(text)
+            qr.make(fit=True)
+            img = qr.make_image(fill='black', back_color='white')
+            img.save(file_path)
+        elif code_type == 'barcode':
+            EAN = barcode.get_barcode_class('code128')
+            ean = EAN(text, writer=ImageWriter())
+            ean.save(file_path.replace('.png', ''))
+
+        return f"{code_type.upper()} code saved as {file_path}"
 
     def text_to_emoticons(self, text):
         emoticon_dict = {
@@ -170,3 +196,88 @@ class TextConverter:
             "Character Frequency": dict(char_frequency),
             "Nerd emoji": "🤓"
         }
+
+    def text_to_braille(self, text):
+        braille_dict = {
+            'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋', 'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚',
+            'k': '⠅', 'l': '⠇', 'm': '⠍', 'n': '⠝', 'o': '⠕', 'p': '⠏', 'q': '⠟', 'r': '⠗', 's': '⠎', 't': '⠞',
+            'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭', 'y': '⠽', 'z': '⠵',
+            '0': '⠼⠚', '1': '⠼⠁', '2': '⠼⠃', '3': '⠼⠉', '4': '⠼⠙', '5': '⠼⠑', '6': '⠼⠋', '7': '⠼⠛', '8': '⠼⠓', '9': '⠼⠊',
+            ' ': ' ', '.': '⠲', ',': '⠂', '?': '⠦', '!': '⠖', "'": '⠄', '"': '⠐⠂', '-': '⠤', '@': '⠜'
+        }
+        return ''.join(braille_dict.get(char.lower(), char) for char in text)
+
+    def pigpen_mode(self, text):
+        pigpen_dict = {
+            'A': '⍁', 'B': '⍂', 'C': '⍃', 'D': '⍄', 'E': '⍅', 'F': '⍆', 'G': '⍇', 'H': '⍈', 'I': '⍉',
+            'J': '⍊', 'K': '⍋', 'L': '⍌', 'M': '⍍', 'N': '⍎', 'O': '⍏', 'P': '⍐', 'Q': '⍑', 'R': '⍒',
+            'S': '⍓', 'T': '⍔', 'U': '⍕', 'V': '⍖', 'W': '⍗', 'X': '⍘', 'Y': '⍙', 'Z': '⍚'
+        }
+        return ''.join(pigpen_dict.get(char.upper(), char) for char in text)
+
+    def morse_code_audio(self, text):
+        MORSE_CODE_DICT = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+            '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+            '8': '---..', '9': '----.'
+        }
+
+        def generate_sine_wave(freq, duration, volume=1.0, sample_rate=44100):
+            num_samples = int(sample_rate * duration)
+            samples = [int(volume * 32767 * struct.sin(2 * struct.pi * freq * t / sample_rate))
+                       for t in range(num_samples)]
+            return samples
+
+        dot_duration = 0.1
+        dash_duration = dot_duration * 3
+        freq = 800
+
+        dot = generate_sine_wave(freq, dot_duration)
+        dash = generate_sine_wave(freq, dash_duration)
+        short_gap = [0] * int(44100 * dot_duration)
+        medium_gap = [0] * int(44100 * dash_duration)
+        long_gap = [0] * int(44100 * dot_duration * 7)
+
+        morse_audio = []
+        for char in text.upper():
+            if char == ' ':
+                morse_audio.extend(long_gap)
+            elif char in MORSE_CODE_DICT:
+                for symbol in MORSE_CODE_DICT[char]:
+                    morse_audio.extend(dot if symbol == '.' else dash)
+                    morse_audio.extend(short_gap)
+                morse_audio.extend(medium_gap)
+
+        # Create a temporary WAV file
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_wav:
+            temp_wav_path = temp_wav.name
+            with wave.open(temp_wav_path, 'w') as wav_file:
+                wav_file.setnchannels(1)
+                wav_file.setsampwidth(2)
+                wav_file.setframerate(44100)
+                wav_file.writeframes(struct.pack('<' + 'h' * len(morse_audio), *morse_audio))
+
+        # Convert WAV to MP3
+        output_file = os.path.join(self.history_folder, self.history_files['morse_sound'])
+        with audioread.audio_open(temp_wav_path) as audio_file:
+            sf.write(output_file, audio_file.read_data(), audio_file.samplerate, format='mp3')
+
+        # Clean up the temporary WAV file
+        os.unlink(temp_wav_path)
+
+        # Play the audio using the system's default player
+        if sys.platform == 'win32':  # Windows
+            os.startfile(output_file)
+        elif sys.platform == 'darwin':  # macOS
+            subprocess.call(['open', output_file])
+        else:  # Linux and other Unix-like
+            subprocess.call(['xdg-open', output_file])
+
+        print(f"Playing Morse code audio for: {text}")
+        input("Press Enter when you're done listening...")
+
+        return output_file

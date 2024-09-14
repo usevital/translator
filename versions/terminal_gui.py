@@ -26,9 +26,11 @@ def print_menu():
     print("13. Binary text")
     print("14. Shadow text")
     print("15. Scroll text")
-    print("16. Generate QR code")
+    print("16. Generate QR code or barcode")
     print("17. Text to emoticons")
     print("18. Nerd mode")
+    print("19. Convert to Braille")
+    print("20. Convert to Pigpen")
     print("0. Exit")
 
 
@@ -42,7 +44,7 @@ def main():
 
     while True:
         print_menu()
-        choice = input("Enter your choice (0-18): ")
+        choice = input("Enter your choice (0-20): ")
 
         if choice == '0':
             print("Thank you for using Text Converter. Goodbye!")
@@ -90,6 +92,10 @@ def main():
         elif choice == '12':
             result = converter.morse_code(text)
             mode = 'morse'
+            play_sound = input("Do you want to generate and play the Morse code sound? (y/n): ").lower()
+            if play_sound == 'y':
+                audio_result = converter.morse_code_audio(text)
+                print(audio_result)
         elif choice == '13':
             result = converter.binary_text(text)
             mode = 'binary'
@@ -102,15 +108,19 @@ def main():
             clear_screen()
             continue
         elif choice == '16':
-            filename = input("Enter the filename for the QR code: ")
-            result = converter.qr_code(text, filename)
-            mode = 'qr'
+            code_type = input("Enter 'qr' for QR code or 'barcode' for barcode: ")
+            filename = input("Enter the filename for the code: ")
+            result = converter.generate_code(text, code_type, filename)
+            mode = 'qr' if code_type == 'qr' else 'barcode'
         elif choice == '17':
             result = converter.text_to_emoticons(text)
             mode = 'emoticons'
         elif choice == '18':
             result = converter.nerd_mode(text)
             mode = 'nerd'
+        elif choice == '19':
+            result = converter.text_to_braille(text)
+            mode = 'braille'
         else:
             print("Invalid choice. Please try again.")
             continue
@@ -121,7 +131,7 @@ def main():
         elif result:
             print(result)
 
-        if mode != 'qr':
+        if mode not in ['qr', 'barcode']:
             copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
             if copy_choice == 'y':
                 if isinstance(result, dict):
@@ -129,7 +139,6 @@ def main():
                 else:
                     copy_to_clipboard(result)
 
-        if mode != 'qr':
             save_choice = input("Do you want to save the result to a history file? (y/n): ").lower()
             if save_choice == 'y':
                 save_message = converter.save_result(result, mode)

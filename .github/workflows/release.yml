@@ -104,6 +104,7 @@ jobs:
           artifacts: release-artifacts/*_${{ github.ref_name }}_*-release*
           draft: true
           name: "Release ${{ github.ref_name }}"
+          body: "If you're using the CLI, we recommend renaming the artifact to something shorter, like 'translator-CLI'."
 
   release_cmdgui:
     name: Draft CMDGUI release
@@ -189,4 +190,4 @@ jobs:
           artifacts: release-artifacts/*_${{ github.ref_name }}_cmdline-release*
           draft: true
           name: "CLI Release ${{ github.ref_name }}"
-          body: "This is a CLI-specific release."
+          body: "This is a CLI-specific release. We recommend renaming the artifact to something shorter, like 'translator-CLI'."
