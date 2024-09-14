@@ -92,7 +92,7 @@ jobs:
       - name: Rename Windows artifacts
         run: |
           cd release-artifacts
-          mv terminal_window.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
+          mv terminal_gui.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
           mv cli_args.exe windows-latest_${{ github.ref_name }}_cmdline-release.exe
 
       - name: Draft normal release
