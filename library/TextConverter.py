@@ -79,11 +79,26 @@ class TextConverter:
         return ''.join(random.sample(text, len(text)))
 
     def piglatin(self, text):
+        words = text.split()
+        translated_words = []
         vowels = "aeiouAEIOU"
-        if text[0] in vowels:
-            return text + "way"
-        else:
-            return text[1:] + text[0] + "ay"
+        consonant_clusters = ["bl", "br", "ch", "cl", "cr", "dr", "fl", "fr",
+                              "gl", "gr", "pl", "pr", "sc", "sh", "sk", "sl",
+                              "sm", "sn", "sp", "st", "sw", "th", "tr", "tw",
+                              "wh", "wr", "sch", "scr", "shr", "spl", "spr",
+                              "squ", "str", "thr"]
+
+        for word in words:
+            if word[0].lower() in vowels:
+                translated_words.append(word + "way")
+            elif word.lower()[:3] in consonant_clusters:
+                translated_words.append(word[3:] + word[:3] + "ay")
+            elif word.lower()[:2] in consonant_clusters:
+                translated_words.append(word[2:] + word[:2] + "ay")
+            else:
+                translated_words.append(word[1:] + word[0] + "ay")
+
+        return " ".join(translated_words)
 
     def caesar_cipher(self, text, shift):
         encrypted = []
