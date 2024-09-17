@@ -2,7 +2,8 @@
 
 ![Made in Python badge](./images/made-in-python.svg)
 
-[![Build Python app](https://github.com/notessentialsite/translator/actions/workflows/build.yml/badge.svg)](https://github.com/notessentialsite/translator/actions/workflows/build.yml)
+[![Build Python app](https://github.com/notessentialsite/translator/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/notessentialsite/translator/actions/workflows/build.yml)
+[![Dependabot Updates](https://github.com/notessentialsite/translator/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/notessentialsite/translator/actions/workflows/dependabot/dependabot-updates)
 
 Originally called `text-conversions` and then called `text-manipulations`, this script can help you convert and manipulate your text into many different ways! (hence the names)
 
