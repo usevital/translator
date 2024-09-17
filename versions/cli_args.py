@@ -24,10 +24,14 @@ def main():
     input_group = parser.add_mutually_exclusive_group(required=True)
     input_group.add_argument("--text", nargs="+", help="Text to convert")
     input_group.add_argument("--file", help="Path to input file")
-    parser.add_argument("--shift", type=int, default=3, help="Shift for Caesar cipher")
-    parser.add_argument("--case", choices=['upper', 'lower'], default='upper', help="Case for case_switch")
-    parser.add_argument("--save", action="store_true", help="Save the result to history file")
-    parser.add_argument("--copy", action="store_true", help="Copy the result to clipboard")
+    parser.add_argument("--shift", type=int, default=3,
+                        help="Shift for Caesar cipher")
+    parser.add_argument("--case", choices=['upper', 'lower'], default='upper',
+                        help="Case for case_switch")
+    parser.add_argument("--save", action="store_true",
+                        help="Save the result to history file")
+    parser.add_argument("--copy", action="store_true",
+                        help="Copy the result to clipboard")
     parser.add_argument("--filename", help="Filename for QR code or barcode")
 
     args = parser.parse_args()
@@ -80,13 +84,10 @@ def main():
             print(output)
         else:
             print(result)
-   
-        # Optionally save the result
         if args.save and args.mode not in ["morse_sound", "qr", "barcode"]:
             converter.save_result(result, args.mode)
             print(f"Result saved to {converter.history_files[args.mode]}")
 
-        # Copy result to clipboard if --copy flag is used and mode is not 'qr', 'barcode', or 'morse_sound'
         if args.copy and args.mode not in ['qr', 'barcode', 'morse_sound']:
             pyperclip.copy(str(result))
             print("Result copied to clipboard")

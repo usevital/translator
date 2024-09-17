@@ -6,6 +6,12 @@ import sys
 import tempfile
 import audioread
 import soundfile as sf
+from art import text2art
+from collections import Counter
+import random
+import qrcode
+import barcode
+from barcode.writer import ImageWriter
 
 
 class TextConverter:
