@@ -2,6 +2,8 @@
 
 ![Made in Python badge](./images/made-in-python.svg)
 
+[![Build Python app](https://github.com/notessentialsite/translator/actions/workflows/build.yml/badge.svg)](https://github.com/notessentialsite/translator/actions/workflows/build.yml)
+
 Originally called `text-conversions` and then called `text-manipulations`, this script can help you convert and manipulate your text into many different ways! (hence the names)
 
 This script was originally made for [NotEssential](https://notessential.blurry.gay) by @KTrain5169
