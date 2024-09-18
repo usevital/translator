@@ -9,11 +9,12 @@ on:
         - 'versions/cli_args.py'
         - '.github/workflows/build.yml'
         - 'requirements.txt'
-      tags-ignore:
-        - 'v*'
+      tags:
+        - 'v*-test'
+        - 'v*-pre'
+        - 'v*-beta'
     pull_request:
     workflow_dispatch:
-    merge_group:
 
 jobs:
     build:
