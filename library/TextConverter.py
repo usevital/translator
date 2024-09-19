@@ -1,4 +1,5 @@
 import wave
+import time
 import struct
 import os
 import subprocess
@@ -12,6 +13,8 @@ import random
 import qrcode
 import barcode
 from barcode.writer import ImageWriter
+import math
+import numpy as np  # Add this import at the top of the file
 
 
 class TextConverter:
@@ -49,11 +52,24 @@ class TextConverter:
         return f"Result saved to {file_path}"
 
     def flipUD(self, text):
-        flip_map = str.maketrans(
-            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?\/"'()[]{}",
-            "ɐqɔpǝɟɓɥᴉſʞlɯuodbɹsʇnʌʍxʎz∀ꓭƆꓷƎℲꓨHIſꓘ⅃WNOꓒΌꓤSꓕꓵΛMX⅄Z⇂ᘕԐત૨୧L8მ0·ˋ¡¿/\„,)(][}{"
-        )
-        return text.translate(flip_map)[::-1]
+        flip_map = {
+            'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ', 'f': 'ɟ',
+            'g': 'ƃ', 'h': 'ɥ', 'i': 'ᴉ', 'j': 'ɾ', 'k': 'ʞ', 'l': 'l',
+            'm': 'ɯ', 'n': 'u', 'o': 'o', 'p': 'd', 'q': 'b', 'r': 'ɹ',
+            's': 's', 't': 'ʇ', 'u': 'n', 'v': 'ʌ', 'w': 'ʍ', 'x': 'x',
+            'y': 'ʎ', 'z': 'z',
+            'A': '∀', 'B': 'ꓭ', 'C': 'Ɔ', 'D': 'ᗡ', 'E': 'Ǝ', 'F': 'Ⅎ',
+            'G': '⅁', 'H': 'H', 'I': 'I', 'J': 'ſ', 'K': 'ꓘ', 'L': '⅂',
+            'M': 'W', 'N': 'N', 'O': 'O', 'P': 'Ԁ', 'Q': 'Ό', 'R': 'ꓤ',
+            'S': 'S', 'T': '⊥', 'U': '∩', 'V': 'Λ', 'W': 'M', 'X': 'X',
+            'Y': '⅄', 'Z': 'Z',
+            '0': '0', '1': 'Ɩ', '2': 'ᄅ', '3': 'Ɛ', '4': 'ㄣ', '5': 'ϛ',
+            '6': '9', '7': 'ㄥ', '8': '8', '9': '6',
+            '.': '˙', ',': '\'', '?': '¿', '!': '¡', '"': '„', "'": ',',
+            '/': '/', '(': ')', ')': '(', '[': ']', ']': '[', '{': '}',
+            '}': '{'
+        }
+        return ''.join(flip_map.get(char, char) for char in reversed(text))
 
     def reverse_text(self, text):
         return text[::-1]
@@ -63,8 +79,8 @@ class TextConverter:
 
     def enchant_text(self, text):
         enchanted_text = str.maketrans(
-            "abcdefghijklmnoqrstuvwzABCDEFGHIJKLMNOQRSTUVWZ1234567890.,!?\"'()[]{}",
-            "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"'()[]{}"
+            "abcdefghijklmnoqrstuvwzABCDEFGHIJKLMNOQRSTUVWZ1234567890.,!?\"/'()[]{}",
+            "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"/'()[]{}"
         )
         enchanted_text = text.translate(enchanted_text)
         return str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', ' ̇/').replace('X', ' ̇/')
@@ -249,7 +265,7 @@ class TextConverter:
 
         def generate_sine_wave(freq, duration, volume=1.0, sample_rate=44100):
             num_samples = int(sample_rate * duration)
-            samples = [int(volume * 32767 * struct.sin(2 * struct.pi * freq * t / sample_rate))
+            samples = [int(volume * 32767 * math.sin(2 * math.pi * freq * t / sample_rate))
                        for t in range(num_samples)]
             return samples
 
@@ -285,7 +301,10 @@ class TextConverter:
         # Convert WAV to MP3
         output_file = os.path.join(self.history_folder, self.history_files['morse_sound'])
         with audioread.audio_open(temp_wav_path) as audio_file:
-            sf.write(output_file, audio_file.read_data(), audio_file.samplerate, format='mp3')
+            data = b''.join(audio_file.read_data())
+            data_array = np.frombuffer(data, dtype=np.int16)
+            data_array = data_array.reshape(-1, 1)  # Reshape to 2D array
+            sf.write(output_file, data_array, audio_file.samplerate, format='mp3')
 
         # Clean up the temporary WAV file
         os.unlink(temp_wav_path)
