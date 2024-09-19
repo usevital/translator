@@ -35,12 +35,12 @@ The scripts also allow you to do the following:
 - Read input from a file instead of command line [--file [path_to_file]]
   CLI example: `python versions/cli_args.py --mode reverse --file hello.txt --save`
 
+  Note: --file and --text are mutuallly exclusive. Attempting to use both will cause the program to fail.
+
 - Save the result into conversion-history/{mode}_history.txt [--save]
   
   For QR codes and barcodes, they are _always_ saved inside conversion-history/qr_codes/ and conversion-history/barcodes/ respectively.
   
-  For Morse code audio, the MP3 file is saved in conversion-history/ and you'll be asked if you want to keep it after playing.
+  For Morse code audio, the MP3 file is saved in conversion-history/morse_audio.mp3 and you'll be asked if you want to keep it after playing.
   
 - Copy the result to clipboard (not supported by QR code, barcode, or Morse sound modes) [--copy]
-
-Note: When using --file, the --text argument should not be used. The content of the file will be used as input for the conversion.
