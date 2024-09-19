@@ -1,8 +1,8 @@
 # Features
 
-To use these as args in CLI, input `--mode` then the arg in [square brackets] next to the feature you want to use.
+To use these as args in CLI, input `--mode` then the arg in [square brackets] next to the feature you want to use. Then, use `--text` to state the text you want to translate.
 
-Example: `--mode case --case lower "Hello World!"`
+Example: `--mode case --case lower --text Hello World!`
 
 - Forces characters into all UPPERCASE/lowercase [case --case [upper|lower]]
 - Flips text uʍop ǝpᴉsdn. [flip]
@@ -33,7 +33,7 @@ Example: `--mode case --case lower "Hello World!"`
 The scripts also allow you to do the following:
 
 - Read input from a file instead of command line [--file [path_to_file]]
-  Example: `python versions/cli_args.py --mode reverse --file hello.txt --save`
+  CLI example: `python versions/cli_args.py --mode reverse --file hello.txt --save`
 
 - Save the result into conversion-history/{mode}_history.txt [--save]
   
