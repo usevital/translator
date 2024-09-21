@@ -15,6 +15,7 @@ on:
 jobs:
     build:
         name: Build app on ${{ matrix.os }}
+        if: ${{ github.REF_TYPE == 'branch' }}
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:

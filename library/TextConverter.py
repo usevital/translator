@@ -26,7 +26,8 @@ class TextConverter:
         os.makedirs(self.barcode_folder, exist_ok=True)
         self.history_files = {
             'reverse': 'reverse_history.txt',
-            'flip': 'flip_history.txt',
+            'character_flip': 'flip_history.txt',
+            'full_flip': 'full_flip_history.txt',
             'enchant': 'enchant_history.txt',
             'case': 'case_history.txt',
             'leetspeak': 'leetspeak_history.txt',
@@ -69,12 +70,16 @@ class TextConverter:
             '/': '/', '(': ')', ')': '(', '[': ']', ']': '[', '{': '}',
             '}': '{'
         }
-        return ''.join(flip_map.get(char, char) for char in reversed(text))
+        return ''.join(flip_map.get(char, char) for char in text)
 
     def reverse_text(self, text):
         return text[::-1]
+    
+    def full_flip(self, text)
+        first_flip = flipUD(text)
+        return reverse_text(first_flip)
 
-    def text_flip(self, text):
+    def character_flip(self, text):
         return self.flipUD(text)
 
     def enchant_text(self, text):

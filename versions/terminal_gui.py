@@ -12,25 +12,26 @@ def clear_screen():
 def print_menu():
     print("\nText Converter Menu:")
     print("1. Reverse text")
-    print("2. Flip text")
-    print("3. Enchant text")
-    print("4. Change case")
-    print("5. Convert to leetspeak")
-    print("6. Scramble text")
-    print("7. Convert to Pig Latin")
-    print("8. Caesar cipher")
-    print("9. ASCII art")
-    print("10. Border text")
-    print("11. Zalgo text")
-    print("12. Morse code")
-    print("13. Binary text")
-    print("14. Shadow text")
-    print("15. Scroll text")
-    print("16. Generate QR code or barcode")
-    print("17. Text to emoticons")
-    print("18. Nerd mode")
-    print("19. Convert to Braille")
-    print("20. Convert to Pigpen")
+    print("2. Flip characters")
+    print("3. Both of the above")
+    print("4. Enchant text")
+    print("5. Change case")
+    print("6. Convert to leetspeak")
+    print("7. Scramble text")
+    print("8. Convert to Pig Latin")
+    print("9. Caesar cipher")
+    print("10. ASCII art")
+    print("11. Border text")
+    print("12. Zalgo text")
+    print("13. Morse code")
+    print("14. Binary text")
+    print("15. Shadow text")
+    print("16. Scroll text")
+    print("17. Generate QR code or barcode")
+    print("18. Text to emoticons")
+    print("19. Nerd mode")
+    print("20. Convert to Braille")
+    print("21. Convert to Pigpen")
     print("0. Exit")
 
 
@@ -44,7 +45,7 @@ def main():
 
     while True:
         print_menu()
-        choice = input("Enter your choice (0-20): ")
+        choice = str(input("Enter your choice (0-20): "))
 
         if choice == '0':
             print("Thank you for using Text Converter. Goodbye!")
@@ -58,38 +59,39 @@ def main():
             result = converter.reverse_text(text)
             mode = 'reverse'
         elif choice == '2':
-            result = converter.text_flip(text)
-            mode = 'flip'
-        elif choice == '3':
+            result = converter.character_flip(text)
+            mode = 'character_flip'
+        elif choice ==  '3':
+        elif choice == '4':
             result = converter.enchant_text(text)
             mode = 'enchant'
-        elif choice == '4':
+        elif choice == '5':
             case = input("Enter 'upper' or 'lower': ")
             result = converter.case_switch(text, case)
             mode = 'case'
-        elif choice == '5':
+        elif choice == '6':
             result = converter.leetspeak(text)
             mode = 'leetspeak'
-        elif choice == '6':
+        elif choice == '7':
             result = converter.scramble_text(text)
             mode = 'scramble'
-        elif choice == '7':
+        elif choice == '8':
             result = converter.piglatin(text)
             mode = 'piglatin'
-        elif choice == '8':
+        elif choice == '9':
             shift = int(input("Enter the shift value: "))
             result = converter.caesar_cipher(text, shift)
             mode = 'caesar'
-        elif choice == '9':
+        elif choice == '10':
             result = converter.ascii_art(text)
             mode = 'ascii'
-        elif choice == '10':
+        elif choice == '11':
             result = converter.border_text(text)
             mode = 'border'
-        elif choice == '11':
+        elif choice == '12':
             result = converter.zalgo_text(text)
             mode = 'zalgo'
-        elif choice == '12':
+        elif choice == '13':
             result = converter.morse_code(text)
             mode = 'morse'
             print(result)
@@ -110,31 +112,34 @@ def main():
                     input("\nPress any key to continue...")
                     clear_screen()
                     continue
-        elif choice == '13':
+        elif choice == '14':
             result = converter.binary_text(text)
             mode = 'binary'
-        elif choice == '14':
+        elif choice == '15':
             result = converter.text_shadow(text)
             mode = 'shadow'
-        elif choice == '15':
+        elif choice == '16':
             converter.scroll_text(text)
             input("\nPress any key to continue...")
             clear_screen()
             continue
-        elif choice == '16':
+        elif choice == '17':
             code_type = input("Enter 'qr' for QR code or 'barcode' for barcode: ")
             filename = input("Enter the filename for the code: ")
             result = converter.generate_code(text, code_type, filename)
             mode = 'qr' if code_type == 'qr' else 'barcode'
-        elif choice == '17':
+        elif choice == '18':
             result = converter.text_to_emoticons(text)
             mode = 'emoticons'
-        elif choice == '18':
+        elif choice == '19':
             result = converter.nerd_mode(text)
             mode = 'nerd'
-        elif choice == '19':
+        elif choice == '20':
             result = converter.text_to_braille(text)
             mode = 'braille'
+        elif choice == '21':
+            result = converter.pigpen_mode(text)
+            mode = 'pigpen'
         else:
             print("Invalid choice. Please try again.")
             continue

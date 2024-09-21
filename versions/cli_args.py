@@ -45,7 +45,8 @@ def main():
 
     mode_map = {
         "reverse": converter.reverse_text,
-        "flip": converter.text_flip,
+        "flip": converter.character_flip,
+        "full_flip": converter.full_flip,
         "enchant": converter.enchant_text,
         "case": lambda t: converter.case_switch(t, args.case),
         "leetspeak": converter.leetspeak,
