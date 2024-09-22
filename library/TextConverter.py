@@ -244,12 +244,11 @@ class TextConverter:
         return ''.join(braille_dict.get(char.lower(), char) for char in text)
 
     def pigpen_mode(self, text):
-        pigpen_dict = {
-            'A': '⍁', 'B': '⍂', 'C': '⍃', 'D': '⍄', 'E': '⍅', 'F': '⍆', 'G': '⍇', 'H': '⍈', 'I': '⍉',
-            'J': '⍊', 'K': '⍋', 'L': '⍌', 'M': '⍍', 'N': '⍎', 'O': '⍏', 'P': '⍐', 'Q': '⍑', 'R': '⍒',
-            'S': '⍓', 'T': '⍔', 'U': '⍕', 'V': '⍖', 'W': '⍗', 'X': '⍘', 'Y': '⍙', 'Z': '⍚'
-        }
-        return ''.join(pigpen_dict.get(char.upper(), char) for char in text)
+        pigpen_trans = str.maketrans(
+            'abcdefghijklmnopqrstuvwxyz',
+            '⍁⍂⍃⍄⍅⍆⍇⍈⍉⍊⍋⍌⍍⍎⍏⍐⍑⍒⍓⍔⍕⍖⍗⍘⍙⍚'
+        )
+        return text.translate(pigpen_trans)
 
     def morse_code_audio(self, text):
         MORSE_CODE_DICT = {
