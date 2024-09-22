@@ -62,6 +62,8 @@ def main():
             result = converter.character_flip(text)
             mode = 'character_flip'
         elif choice ==  '3':
+            result = converter.character_flip(text)
+            mode = 'full_flip'
         elif choice == '4':
             result = converter.enchant_text(text)
             mode = 'enchant'
