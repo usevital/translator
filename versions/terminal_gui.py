@@ -92,10 +92,24 @@ def main():
         elif choice == '12':
             result = converter.morse_code(text)
             mode = 'morse'
+            print(result)
             play_sound = input("Do you want to generate and play the Morse code sound? (y/n): ").lower()
             if play_sound == 'y':
+                mode = 'morse_sound'
                 audio_result = converter.morse_code_audio(text)
-                print(audio_result)
+                print(f"Audio file generated: {audio_result}")
+                save_audio = input("Do you want to keep the audio file? (y/n): ").lower()
+                if save_audio == 'y':
+                    print(f"Audio file saved as {audio_result}")
+                    input("\nPress any key to continue...")
+                    clear_screen()
+                    continue
+                else:
+                    os.remove(audio_result)
+                    print("Audio file deleted.")
+                    input("\nPress any key to continue...")
+                    clear_screen()
+                    continue
         elif choice == '13':
             result = converter.binary_text(text)
             mode = 'binary'
@@ -134,7 +148,7 @@ def main():
         elif result:
             print(result)
 
-        if mode not in ['qr', 'barcode']:
+        if mode not in ['qr', 'barcode', 'morse_sound']:
             copy_choice = input("Do you want to copy the result to clipboard? (y/n): ").lower()
             if copy_choice == 'y':
                 if isinstance(result, dict):

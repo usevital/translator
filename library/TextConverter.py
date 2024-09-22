@@ -1,4 +1,5 @@
 import wave
+import time
 import struct
 import os
 import subprocess
@@ -12,6 +13,8 @@ import random
 import qrcode
 import barcode
 from barcode.writer import ImageWriter
+import math
+import numpy as np  # Add this import at the top of the file
 
 
 class TextConverter:
@@ -271,7 +274,7 @@ class TextConverter:
 
         def generate_sine_wave(freq, duration, volume=1.0, sample_rate=44100):
             num_samples = int(sample_rate * duration)
-            samples = [int(volume * 32767 * struct.sin(2 * struct.pi * freq * t / sample_rate))
+            samples = [int(volume * 32767 * math.sin(2 * math.pi * freq * t / sample_rate))
                        for t in range(num_samples)]
             return samples
 
@@ -309,8 +312,10 @@ class TextConverter:
         output_file = os.path.join(
             self.history_folder, self.history_files['morse_sound'])
         with audioread.audio_open(temp_wav_path) as audio_file:
-            sf.write(output_file, audio_file.read_data(),
-                     audio_file.samplerate, format='mp3')
+            data = b''.join(audio_file.read_data())
+            data_array = np.frombuffer(data, dtype=np.int16)
+            data_array = data_array.reshape(-1, 1)  # Reshape to 2D array
+            sf.write(output_file, data_array, audio_file.samplerate, format='mp3')
 
         # Clean up the temporary WAV file
         os.unlink(temp_wav_path)
