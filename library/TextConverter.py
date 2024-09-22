@@ -52,24 +52,11 @@ class TextConverter:
         return f"Result saved to {file_path}"
 
     def flipUD(self, text):
-        flip_map = {
-            'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ', 'f': 'ɟ',
-            'g': 'ƃ', 'h': 'ɥ', 'i': 'ᴉ', 'j': 'ɾ', 'k': 'ʞ', 'l': 'l',
-            'm': 'ɯ', 'n': 'u', 'o': 'o', 'p': 'd', 'q': 'b', 'r': 'ɹ',
-            's': 's', 't': 'ʇ', 'u': 'n', 'v': 'ʌ', 'w': 'ʍ',
-            'y': 'ʎ', 'z': 'z',
-            'A': '∀', 'B': 'ꓭ', 'C': 'Ɔ', 'D': 'ᗡ', 'E': 'Ǝ', 'F': 'Ⅎ',
-            'G': '⅁', 'H': 'H', 'I': 'I', 'J': 'ſ', 'K': 'ꓘ', 'L': '⅂',
-            'M': 'W', 'N': 'N', 'O': 'O', 'P': 'Ԁ', 'Q': 'Ό', 'R': 'ꓤ',
-            'S': 'S', 'T': '⊥', 'U': '∩', 'V': 'Λ', 'W': 'M',
-            'Y': '⅄', 'Z': 'Z',
-            '0': '0', '1': 'Ɩ', '2': 'ᄅ', '3': 'Ɛ', '4': 'ㄣ', '5': 'ϛ',
-            '6': '9', '7': 'ㄥ', '8': '8', '9': '6',
-            '.': '˙', ',': '\'', '?': '¿', '!': '¡', '"': '„', "'": ',',
-            '/': '/', '(': ')', ')': '(', '[': ']', ']': '[', '{': '}',
-            '}': '{'
-        }
-        return ''.join(flip_map.get(char, char) for char in reversed(text))
+        flip_map = str.maketrans(
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?/\"'()[]{\}",
+            "ɐqɔpǝɟɓɥᴉſʞlɯuodbɹsʇnʌʍxʎz∀ꓭƆꓷƎℲꓨHIſꓘ⅃WNOꓒΌꓤSꓕꓵΛMX⅄Z⇂ᘕԐત૨୧L8მ0·ˋ¡¿\„,)(][}/{"
+        )
+        return text.translate(flip_map)
 
     def reverse_text(self, text):
         return text[::-1]
@@ -78,12 +65,20 @@ class TextConverter:
         return self.flipUD(text)
 
     def enchant_text(self, text):
-        enchanted_text = str.maketrans(
-            "abcdefghijklmnoqrstuvwzABCDEFGHIJKLMNOQRSTUVWZ1234567890.,!?\"/'()[]{}",
-            "ᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λᔑʖᓵ↸ᒷ⎓⊣⍑╎⋮ꖌꖎᒲリ𝙹ᑑ∷ᓭℸ⚍⍊∴Λ1234567890.,!?\"/'()[]{}"
-        )
-        enchanted_text = text.translate(enchanted_text)
-        return str(enchanted_text).replace('p', '!¡').replace('P', '!¡').replace('y', '||').replace('Y', '||').replace('x', ' ̇/').replace('X', ' ̇/')
+        enchant_dict = {
+            'A': 'ᔑ', 'B': 'ʖ', 'C': 'ᓵ', 'D': '↸', 'E': 'ᒷ', 'F': '⎓',
+            'G': '⊣', 'H': '⍑', 'I': '╎', 'J': '⋮', 'K': 'ꖌ', 'L': 'ꖎ',
+            'M': 'ᒲ', 'N': 'リ', 'O': '𝙹', 'P': '!¡', 'Q': 'ᑑ', 'R': '∷',
+            'S': 'ᓭ', 'T': 'ℸ', 'U': '⚍', 'V': '⍊', 'W': '∴', 'X': ' ̇/',
+            'Y': '||', 'Z': 'Λ',
+            'a': 'ᔑ', 'b': 'ʖ', 'c': 'ᓵ', 'd': '↸', 'e': 'ᒷ', 'f': '⎓',
+            'g': '⊣', 'h': '⍑', 'i': '╎', 'j': '⋮', 'k': 'ꖌ', 'l': 'ꖎ',
+            'm': 'ᒲ', 'n': 'リ', 'o': '𝙹', 'p': '!¡', 'q': 'ᑑ', 'r': '∷',
+            's': 'ᓭ', 't': 'ℸ', 'u': '⚍', 'v': '⍊', 'w': '∴', 'x': ' ̇/',
+            'y': '||', 'z': 'Λ'
+        }
+
+        return ''.join(enchant_dict.get(char, char) for char in text)
 
     def case_switch(self, text, case='upper'):
         if case.lower() == 'upper':
@@ -127,7 +122,8 @@ class TextConverter:
         for char in text:
             if char.isalpha():
                 shift_amount = 65 if char.isupper() else 97
-                encrypted.append(chr((ord(char) - shift_amount + shift) % 26 + shift_amount))
+                encrypted.append(
+                    chr((ord(char) - shift_amount + shift) % 26 + shift_amount))
             else:
                 encrypted.append(char)
         return ''.join(encrypted)
@@ -139,16 +135,23 @@ class TextConverter:
         return text2art(text, font='block')
 
     def zalgo_text(self, text):
-        zalgo_chars = ['̍', '̎', '̄', '̅', '̿', '̑', '̆', '̐', '͒', '͗', '͑', '̇', '̈', '̊', '͂', '̓', '̈', '͊', '͋', '͌', '̃', '̂', '̌', '͐', '̀', '́', '̋', '̏', '̒', '̓', '̔', '̽', '̉', 'ͣ', 'ͤ', 'ͥ', 'ͦ', 'ͧ', 'ͨ', 'ͩ', 'ͪ', 'ͫ', 'ͬ', 'ͭ', 'ͮ', 'ͯ', '̾', '͛', '͆', '̚']
+        zalgo_chars = ['̍', '̎', '̄', '̅', '̿', '̑', '̆', '̐', '͒', '͗', '͑', '̇', '̈', '̊', '͂', '̓', '̈', '͊', '͋', '͌', '̃', '̂', '̌', '͐',
+                       '̀', '́', '̋', '̏', '̒', '̓', '̔', '̽', '̉', 'ͣ', 'ͤ', 'ͥ', 'ͦ', 'ͧ', 'ͨ', 'ͩ', 'ͪ', 'ͫ', 'ͬ', 'ͭ', 'ͮ', 'ͯ', '̾', '͛', '͆', '̚']
         return ''.join(random.choice(zalgo_chars) + char for char in text)
 
     def morse_code(self, text):
         MORSE_CODE_DICT = {
-            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
-            'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
-            'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..',
-            '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', '0': '-----',
-            ', ': '--..--', '.': '.-.-.-', '?': '..--..', '/': '-..-.', '-': '-....-', '(': '-.--.', ')': '-.--.-'
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
+            'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+            'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---',
+            'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+            'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--',
+            'Z': '--..',
+            '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+            '5': '.....', '6': '-....', '7': '--...', '8': '---..',
+            '9': '----.', '0': '-----',
+            ',': '--..--', '.': '.-.-.-', '?': '..--..', '/': '-..-.',
+            '-': '-....-', '(': '-.--.', ')': '-.--.-'
         }
         return ' '.join(MORSE_CODE_DICT.get(char.upper(), '') for char in text)
 
@@ -182,7 +185,8 @@ class TextConverter:
         file_path = os.path.join(folder, f"{filename}.png")
 
         if code_type == 'qr':
-            qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+            qr = qrcode.QRCode(
+                version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
             qr.add_data(text)
             qr.make(fit=True)
             img = qr.make_image(fill='black', back_color='white')
@@ -236,30 +240,35 @@ class TextConverter:
 
     def text_to_braille(self, text):
         braille_dict = {
-            'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋', 'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚',
-            'k': '⠅', 'l': '⠇', 'm': '⠍', 'n': '⠝', 'o': '⠕', 'p': '⠏', 'q': '⠟', 'r': '⠗', 's': '⠎', 't': '⠞',
-            'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭', 'y': '⠽', 'z': '⠵',
-            '0': '⠼⠚', '1': '⠼⠁', '2': '⠼⠃', '3': '⠼⠉', '4': '⠼⠙', '5': '⠼⠑', '6': '⠼⠋', '7': '⠼⠛', '8': '⠼⠓', '9': '⠼⠊',
-            ' ': ' ', '.': '⠲', ',': '⠂', '?': '⠦', '!': '⠖', "'": '⠄', '"': '⠐⠂', '-': '⠤', '@': '⠜'
+            'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋',
+            'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚', 'k': '⠅', 'l': '⠇',
+            'm': '⠍', 'n': '⠝', 'o': '⠕', 'p': '⠏', 'q': '⠟', 'r': '⠗',
+            's': '⠎', 't': '⠞', 'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭',
+            'y': '⠽', 'z': '⠵',
+            '0': '⠼⠚', '1': '⠼⠁', '2': '⠼⠃', '3': '⠼⠉', '4': '⠼⠙', '5': '⠼⠑',
+            '6': '⠼⠋', '7': '⠼⠛', '8': '⠼⠓', '9': '⠼⠊',
+            ' ': ' ', '.': '⠲', ',': '⠂', '?': '⠦', '!': '⠖', "'": '⠄',
+            '"': '⠐⠂', '-': '⠤', '@': '⠜'
         }
         return ''.join(braille_dict.get(char.lower(), char) for char in text)
 
     def pigpen_mode(self, text):
-        pigpen_dict = {
-            'A': '⍁', 'B': '⍂', 'C': '⍃', 'D': '⍄', 'E': '⍅', 'F': '⍆', 'G': '⍇', 'H': '⍈', 'I': '⍉',
-            'J': '⍊', 'K': '⍋', 'L': '⍌', 'M': '⍍', 'N': '⍎', 'O': '⍏', 'P': '⍐', 'Q': '⍑', 'R': '⍒',
-            'S': '⍓', 'T': '⍔', 'U': '⍕', 'V': '⍖', 'W': '⍗', 'X': '⍘', 'Y': '⍙', 'Z': '⍚'
-        }
-        return ''.join(pigpen_dict.get(char.upper(), char) for char in text)
+        pigpen_trans = str.maketrans(
+            'abcdefghijklmnopqrstuvwxyz',
+            '⍁⍂⍃⍄⍅⍆⍇⍈⍉⍊⍋⍌⍍⍎⍏⍐⍑⍒⍓⍔⍕⍖⍗⍘⍙⍚'
+        )
+        return text.translate(pigpen_trans)
 
     def morse_code_audio(self, text):
         MORSE_CODE_DICT = {
-            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
-            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
-            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
-            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
-            'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
-            '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.',
+            'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---',
+            'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---',
+            'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+            'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--',
+            'Z': '--..',
+            '0': '-----', '1': '.----', '2': '..---', '3': '...--',
+            '4': '....-', '5': '.....', '6': '-....', '7': '--...',
             '8': '---..', '9': '----.'
         }
 
@@ -296,10 +305,12 @@ class TextConverter:
                 wav_file.setnchannels(1)
                 wav_file.setsampwidth(2)
                 wav_file.setframerate(44100)
-                wav_file.writeframes(struct.pack('<' + 'h' * len(morse_audio), *morse_audio))
+                wav_file.writeframes(struct.pack(
+                    '<' + 'h' * len(morse_audio), *morse_audio))
 
         # Convert WAV to MP3
-        output_file = os.path.join(self.history_folder, self.history_files['morse_sound'])
+        output_file = os.path.join(
+            self.history_folder, self.history_files['morse_sound'])
         with audioread.audio_open(temp_wav_path) as audio_file:
             data = b''.join(audio_file.read_data())
             data_array = np.frombuffer(data, dtype=np.int16)

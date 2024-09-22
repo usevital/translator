@@ -135,6 +135,9 @@ def main():
         elif choice == '19':
             result = converter.text_to_braille(text)
             mode = 'braille'
+        elif choice == '20':
+            result = converter.pigpen_mode(text)
+            mode = 'pigpen'
         else:
             print("Invalid choice. Please try again.")
             continue
