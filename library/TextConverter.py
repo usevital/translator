@@ -43,6 +43,7 @@ class TextConverter:
             'braille': 'braille_history.txt',
             'barcode': 'barcode_history.txt',
             'morse_sound': 'morse_audio.mp3',
+            'pigpen': 'pigpen_history.txt',
         }
 
     def save_result(self, result, mode):
