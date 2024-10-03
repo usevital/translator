@@ -1,5 +1,4 @@
 import pyperclip
-import sys
 from tkinter import *
 from tkinter import ttk
 from functools import partial
