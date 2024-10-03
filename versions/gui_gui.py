@@ -1,4 +1,5 @@
 import pyperclip
+import os
 import sys
 from tkinter import *
 from tkinter import ttk
