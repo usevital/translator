@@ -22,16 +22,16 @@ def add_copy_buttons():
 root = Tk()
 root.title("Translator")
 ico = Image.open('images/icon.ico')
-ttk.Label( text="Enter text to translate:").grid(column=0, row=0)
-translate_text = Entry(root)
-translate_text.grid(row=1, column=0)
 photo = ImageTk.PhotoImage(ico)
 root.wm_iconphoto(False, photo)
 
+ttk.Label( text="Enter text to translate:").grid(column=0, row=0)
+translate_text = Entry(root)
+translate_text.grid(row=1, column=0)
 ttk.Label( text="Reversed text:").grid(row=2,column=0)
 ttk.Label( text="Fliped text:").grid(row=4,column=0)
 ttk.Label( text="Enchanted text:").grid(row=5,column=0)
-
 ttk.Button(root, text="Submit", command=partial(add_text, translate_text),).grid(row=1, column=1)
 add_copy_buttons()
+
 root.mainloop()
