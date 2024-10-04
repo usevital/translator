@@ -32,35 +32,36 @@ jobs:
           pip install pyinstaller
 
       - name: PyInstaller (Terminal GUI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py
+        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
 
       - name: List dist directory
         run: ls -R dist
       
       - name: PyInstaller (CLI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py
+        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
 
       - name: List dist directory
         run: ls -R dist
 
-      - name: Rename artifacts on Mac & Linux first
-        if: ${{ matrix.os != 'windows-latest' }}
+      - name: Tar files on Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-          cd dist
-          mv terminal_gui ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
-          mv cli_args ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
+            chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
+            chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
+            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
+            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
 
       - name: Upload debug builds
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}_builds
-          path: build/
+          path: build/*
 
       - name: Upload distributable builds
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}_dists
-          path: dist/
+          path: dist/*
 
   normal_release:
     name: Draft normal release
@@ -68,22 +69,9 @@ jobs:
     needs: build
     if: ${{ !contains(github.ref_name, '_') }}
     steps:
-      - name: Download Windows artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: windows-latest_dists
-          path: release-artifacts
-
-      - name: Download MacOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-latest_dists
-          path: release-artifacts
-
-      - name: Download Linux artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-latest_dists
           path: release-artifacts
 
       - name: List release-artifacts directory # debug
@@ -112,22 +100,9 @@ jobs:
     needs: build
     if: ${{ endsWith(github.ref_name, '_CMDGUI') }}
     steps:
-      - name: Download Windows artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: windows-latest_dists
-          path: release-artifacts
-
-      - name: Download MacOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-latest_dists
-          path: release-artifacts
-
-      - name: Download Linux artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-latest_dists
           path: release-artifacts
 
       - name: List release-artifacts directory # debug
@@ -155,22 +130,9 @@ jobs:
     needs: build
     if: ${{ endsWith(github.ref_name, '_CLI') }}
     steps:
-      - name: Download Windows artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: windows-latest_dists
-          path: release-artifacts
-
-      - name: Download MacOS artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-latest_dists
-          path: release-artifacts
-
-      - name: Download Linux artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ubuntu-latest_dists
           path: release-artifacts
 
       - name: List release-artifacts directory # debug
