@@ -32,13 +32,13 @@ jobs:
           pip install pyinstaller
 
       - name: PyInstaller (Terminal GUI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
+        run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
 
       - name: List dist directory
         run: ls -R dist
       
       - name: PyInstaller (CLI)
-        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
+        run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: List dist directory
         run: ls -R dist
@@ -48,8 +48,8 @@ jobs:
         run: |
             chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
             chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
-            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmdgui-release
-            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmdline-release
+            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: Upload debug builds
         uses: actions/upload-artifact@v4
@@ -77,19 +77,13 @@ jobs:
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
-      - name: Rename Windows artifacts
-        run: |
-          cd release-artifacts
-          mv terminal_gui.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
-          mv cli_args.exe windows-latest_${{ github.ref_name }}_cmdline-release.exe
-
       - name: Draft normal release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_*-release*
+          artifacts: release-artifacts/*_${{ github.ref_name }}_*
           draft: true
           name: "Release ${{ github.ref_name }}"
           body: "If you're using the CLI, we recommend renaming the artifact to something shorter, like 'translator-CLI'."
@@ -108,18 +102,13 @@ jobs:
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
-      - name: Rename Windows artifacts
-        run: |
-          cd release-artifacts
-          mv terminal_gui.exe windows-latest_${{ github.ref_name }}_cmdgui-release.exe
-
       - name: Draft CMDGUI release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cmdgui-release*
+          artifacts: release-artifacts/*_${{ github.ref_name }}_cmd*
           draft: true
           name: "CMDGUI Release ${{ github.ref_name }}"
           body: "This is a CMDGUI-specific release."
@@ -138,18 +127,13 @@ jobs:
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
 
-      - name: Rename Windows artifacts
-        run: |
-          cd release-artifacts
-          mv cli_args.exe windows-latest_${{ github.ref_name }}_cmdline-release.exe
-
       - name: Draft CLI release
         uses: ncipollo/release-action@v1.14.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cmdline-release*
+          artifacts: release-artifacts/*_${{ github.ref_name }}_cli*
           draft: true
           name: "CLI Release ${{ github.ref_name }}"
           body: "This is a CLI-specific release. We recommend renaming the artifact to something shorter, like 'translator-CLI'."
