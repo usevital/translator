@@ -73,6 +73,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: "*_dists"
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
@@ -98,6 +99,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: "*_dists"
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
@@ -123,6 +125,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: "*_dists"
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
