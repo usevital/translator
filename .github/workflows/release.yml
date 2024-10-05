@@ -34,10 +34,10 @@ jobs:
       - name: PyInstaller (Terminal GUI)
         run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
 
-      - name: List dist directory
+      - name: List dist directory # debug
         run: ls -R dist
       
-      - name: PyInstaller (CLI)
+      - name: PyInstaller (CLI) # debug
         run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: List dist directory
@@ -46,10 +46,10 @@ jobs:
       - name: Tar files on Linux
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-            chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
-            chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cli-release
-            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
-            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cli-release
+            chmod +x dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            chmod +x dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
+            tar -czvf dist/${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            tar -czvf dist/${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: Upload debug builds
         uses: actions/upload-artifact@v4
