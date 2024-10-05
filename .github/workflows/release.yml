@@ -37,7 +37,7 @@ jobs:
       - name: List dist directory # debug
         run: ls -R dist
       
-      - name: PyInstaller (CLI) # debug
+      - name: PyInstaller (CLI)
         run: pyinstaller --onefile --icon=images/icon.ico versions/cli_args.py --name ${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: List dist directory
@@ -50,6 +50,8 @@ jobs:
             chmod +x dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
             tar -czvf dist/${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
             tar -czvf dist/${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
+            rm -rf dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            rm -rf dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: Upload debug builds
         uses: actions/upload-artifact@v4
@@ -84,7 +86,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_*
+          artifacts: release-artifacts/*_dists/*_${{ github.ref_name }}_*
           draft: true
           name: "Release ${{ github.ref_name }}"
           body: "If you're using the CLI, we recommend renaming the artifact to something shorter, like 'translator-CLI'."
@@ -110,7 +112,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cmd*
+          artifacts: release-artifacts/*_dists/*_${{ github.ref_name }}_cmd*
           draft: true
           name: "CMDGUI Release ${{ github.ref_name }}"
           body: "This is a CMDGUI-specific release."
@@ -136,7 +138,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cli*
+          artifacts: release-artifacts/*_dists/*_${{ github.ref_name }}_cli*
           draft: true
           name: "CLI Release ${{ github.ref_name }}"
           body: "This is a CLI-specific release. We recommend renaming the artifact to something shorter, like 'translator-CLI'."
