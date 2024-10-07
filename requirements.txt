@@ -1,6 +1,6 @@
 pyperclip==1.9.0
 art==6.3
-qrcode==7.4.2
+qrcode==8.0
 argparse==1.4.0
 pillow==10.4.0
 python-barcode==0.15.1
