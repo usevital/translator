@@ -92,7 +92,6 @@ def main():
         elif choice == '12':
             result = converter.morse_code(text)
             mode = 'morse'
-            print(result)
             play_sound = input("Do you want to generate and play the Morse code sound? (y/n): ").lower()
             if play_sound == 'y':
                 mode = 'morse_sound'

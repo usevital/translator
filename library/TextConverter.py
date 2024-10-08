@@ -267,9 +267,15 @@ class TextConverter:
             'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
             'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--',
             'Z': '--..',
+            
             '0': '-----', '1': '.----', '2': '..---', '3': '...--',
             '4': '....-', '5': '.....', '6': '-....', '7': '--...',
-            '8': '---..', '9': '----.'
+            '8': '---..', '9': '----.',
+
+            '&': '.-...', "'": '.----.', '@': '.--.-.', ')': '-.--.-',
+            '(': '-.--.', ':': '---...', ',': '--..--', '=': '-...-',
+            '!': '-.-.--', '.': '.-.-.-', '-': '-....-', '+': '.-.-.',
+            '"': '.-..-.', '?': '..--..', '/': '-..-.', ' ': '/'
         }
 
         def generate_sine_wave(freq, duration, volume=1.0, sample_rate=44100):
@@ -315,7 +321,8 @@ class TextConverter:
             data = b''.join(audio_file.read_data())
             data_array = np.frombuffer(data, dtype=np.int16)
             data_array = data_array.reshape(-1, 1)  # Reshape to 2D array
-            sf.write(output_file, data_array, audio_file.samplerate, format='mp3')
+            sf.write(output_file, data_array,
+                     audio_file.samplerate, format='mp3')
 
         # Clean up the temporary WAV file
         os.unlink(temp_wav_path)
