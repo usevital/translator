@@ -54,7 +54,7 @@ class TextConverter:
     def flipUD(self, text):
         flip_map = str.maketrans(
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?/\"'()[]{\}",
-            "ɐqɔpǝɟɓɥᴉſʞlɯuodbɹsʇnʌʍxʎzⱯᗺƆꓷƎℲ⅁HIſꓘꞀWNOꓒΌꓤS⟘ꓵΛMX⅄Z⇂ᘕԐત૨୧L8მ0·ˋ¡¿\„,)(][}/{"
+            "ɐqɔpǝɟɓɥᴉſʞlɯuodbɹsʇnʌʍxʎzⱯᗺƆꓷƎℲ⅁HIſꓘꞀWNOꓒΌꓤS⟘ꓵΛMX⅄Z⇂ᘕԐત૨୧L8მ0·'¡¿\„,)(][}/{"
         )
         return text.translate(flip_map)
 
