@@ -34,7 +34,7 @@ jobs:
       - name: PyInstaller (Terminal GUI)
         run: pyinstaller --onefile --icon=images/icon.ico versions/terminal_gui.py --name ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
 
-      - name: List dist directory
+      - name: List dist directory # debug
         run: ls -R dist
       
       - name: PyInstaller (CLI)
@@ -46,10 +46,12 @@ jobs:
       - name: Tar files on Linux
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-            chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
-            chmod +x ${{ matrix.os }}_${{ github.ref_name }}_cli-release
-            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cmd-release
-            tar -czvf ${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz ${{ matrix.os }}_${{ github.ref_name }}_cli-release
+            chmod +x dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            chmod +x dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
+            tar -czvf dist/${{ matrix.os }}_${{ github.ref_name }}_cmd.tar.gz dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            tar -czvf dist/${{ matrix.os }}_${{ github.ref_name }}_cli.tar.gz dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
+            rm -rf dist/${{ matrix.os }}_${{ github.ref_name }}_cmd-release
+            rm -rf dist/${{ matrix.os }}_${{ github.ref_name }}_cli-release
 
       - name: Upload debug builds
         uses: actions/upload-artifact@v4
@@ -73,6 +75,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: "*_dists"
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
@@ -83,7 +86,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_*
+          artifacts: release-artifacts/*_dists/*_${{ github.ref_name }}_*
           draft: true
           name: "Release ${{ github.ref_name }}"
           body: "If you're using the CLI, we recommend renaming the artifact to something shorter, like 'translator-CLI'."
@@ -98,6 +101,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: "*_dists"
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
@@ -108,7 +112,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cmd*
+          artifacts: release-artifacts/*_dists/*_${{ github.ref_name }}_cmd*
           draft: true
           name: "CMDGUI Release ${{ github.ref_name }}"
           body: "This is a CMDGUI-specific release."
@@ -123,6 +127,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: "*_dists"
 
       - name: List release-artifacts directory # debug
         run: ls -R release-artifacts
@@ -133,7 +138,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           generateReleaseNotes: true
           tag: ${{ github.ref_name }}
-          artifacts: release-artifacts/*_${{ github.ref_name }}_cli*
+          artifacts: release-artifacts/*_dists/*_${{ github.ref_name }}_cli*
           draft: true
           name: "CLI Release ${{ github.ref_name }}"
           body: "This is a CLI-specific release. We recommend renaming the artifact to something shorter, like 'translator-CLI'."
