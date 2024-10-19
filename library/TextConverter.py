@@ -154,7 +154,7 @@ class TextConverter:
             '-': '-....-', '(': '-.--.', ')': '-.--.-',
             ' ': '/'
         }
-        return ' '.join(MORSE_CODE_DICT.get(char.upper(), '') for char in text)
+        return ' '.join(MORSE_CODE_DICT.get(char.upper(), char) for char in text)
 
     def binary_text(self, text):
         return ' '.join(format(ord(char), '08b') for char in text)
