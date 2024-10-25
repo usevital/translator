@@ -23,7 +23,7 @@ jobs:
             - name: Checkout ref
               uses: actions/checkout@v4
               with:
-                fetch-depth: 2
+                ref: ${{ github.sha }}
 
             - name: Setup Python
               uses: actions/setup-python@v5
@@ -44,11 +44,11 @@ jobs:
             - name: Upload Builds
               uses: actions/upload-artifact@v4
               with:
-                name: ${{ matrix.os }} build
+                name: ${{ matrix.os }} build at ${{ github.sha }}
                 path: build/
 
             - name: Upload Dists
               uses: actions/upload-artifact@v4
               with:
-                name: ${{ matrix.os }} dist
+                name: ${{ matrix.os }} dist at ${{ github.sha }}
                 path: dist/
