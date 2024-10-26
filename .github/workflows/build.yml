@@ -36,13 +36,13 @@ jobs:
                 pip install pyinstaller
 
             - name: PyInstaller (Terminal GUI)
-              run: pyinstaller --icon=images/icon.ico versions/terminal_gui.py
+              run: pyinstaller versions/terminal_gui.py --icon=images/icon.ico
 
             - name: PyInstaller (CLI)
-              run: pyinstaller --icon=images/icon.ico versions/cli_args.py
+              run: pyinstaller versions/cli_args.py --icon=images/icon.ico
 
             - name: PyInstaller (GUI)
-              run: pyinstaller --icon=images/icon.ico versions/gui_gui.py
+              run: pyinstaller versions/gui_gui.py --icon=images/icon.ico --add-data "images/icon.ico;images"
 
             - name: Upload Builds
               uses: actions/upload-artifact@v4
