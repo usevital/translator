@@ -13,6 +13,8 @@ def FlipedTextCopy(text):
     pyperclip.copy(converter.reverse_text(converter.text_flip(text.get())))
 
 def add_text(text_input):
+    x_size=int(9*len(text_input.get())+300)
+    root.geometry(f"{x_size}x{300}")
     ttk.Label( text=converter.reverse_text(text_input.get()),justify="left").grid(sticky = W,row=2,column=2)
     ttk.Label( text=converter.text_flip(text_input.get()),justify="left").grid(sticky = W,row=4,column=2)
     ttk.Label( text=converter.enchant_text(text_input.get()),justify="left").grid(sticky = W,row=5,column=2)
@@ -25,7 +27,7 @@ root.title("Translator")
 ico = Image.open('images/icon.ico')
 photo = ImageTk.PhotoImage(ico)
 root.wm_iconphoto(False, photo)
-root.geometry("600x300")
+root.geometry("300x300")
 copy_icon = Image.open('images/content_copy.png')
 copy_icon = ImageTk.PhotoImage(copy_icon)
 
