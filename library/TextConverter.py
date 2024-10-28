@@ -56,7 +56,7 @@ class TextConverter:
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890.,!?/\"'()[]{\}",
             "ɐqɔpǝɟɓɥᴉſʞlɯuodbɹsʇnʌʍxʎzⱯᗺƆᗡƎℲ⅁HIſꓘꞀWNOԀꝹᴚS⟘∩ΛMX⅄Z⇂ᘕԐત૨୧L8მ0·'¡¿\„,)(][}/{"
         )
-        return text.translate(flip_map)
+        return text.translate(flip_map)[::-1]
 
     def reverse_text(self, text):
         return text[::-1]
