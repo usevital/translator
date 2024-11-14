@@ -16,9 +16,9 @@ def copy_to_clipboard(text):
     pyperclip.copy(text['text'])
 
 def add_text(*args):
-    x_size=int(8.5*len(translate_text.get())+240)
-    root.geometry(f"{x_size}x{380}")
     new_text = translate_text.get()
+    x_size=int(8.5*len(new_text)+240)
+    root.geometry(f"{x_size}x{380}")
     reversed_text['text'] = converter.reverse_text(new_text)
     flipped_text['text'] = converter.text_flip(new_text)
     enchanted_text['text'] = converter.enchant_text(new_text)
