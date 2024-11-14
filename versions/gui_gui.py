@@ -56,43 +56,43 @@ translate_text.trace_add("write", add_text)
 input_widget = ttk.Entry(root, textvariable=translate_text)
 input_widget.grid(row=0, column=0, columnspan=2)
 
-ttk.Label(text="Reversed text:").grid(row=1,column=text_lable_column)
+ttk.Label(text="Reversed:").grid(row=1,column=text_lable_column)
 reversed_text = ttk.Label(justify="left")
 reversed_text.grid(row=1, column=text_output_column, sticky = W)
 
-ttk.Label(text="Flipped text:").grid(row=2,column=text_lable_column)
+ttk.Label(text="Flipped:").grid(row=2,column=text_lable_column)
 flipped_text = ttk.Label(justify="left")
 flipped_text.grid(row=2, column=text_output_column, sticky = W)
 
-ttk.Label(text="Enchanted text:").grid(row=3,column=text_lable_column)
+ttk.Label(text="Enchanted:").grid(row=3,column=text_lable_column)
 enchanted_text = ttk.Label(justify="left")
 enchanted_text.grid(row=3, column=text_output_column, sticky = W)
 
-ttk.Label(text="Capitalized text:").grid(row=4,column=text_lable_column)
+ttk.Label(text="Capitalized:").grid(row=4,column=text_lable_column)
 capitalized_text = ttk.Label(justify="left")
 capitalized_text.grid(row=4, column=text_output_column, sticky = W)
 
-ttk.Label(text="Lowercased text:").grid(row=5,column=text_lable_column)
+ttk.Label(text="Lowercased:").grid(row=5,column=text_lable_column)
 lowercased_text = ttk.Label(justify="left")
 lowercased_text.grid(row=5, column=text_output_column, sticky = W)
 
-ttk.Label(text="Leetspeak text:").grid(row=6,column=text_lable_column)
+ttk.Label(text="Leetspeak:").grid(row=6,column=text_lable_column)
 leetspeak_text = ttk.Label(justify="left")
 leetspeak_text.grid(row=6, column=text_output_column, sticky = W)
 
-ttk.Label(text="Scrambled text:").grid(row=7,column=text_lable_column)
+ttk.Label(text="Scrambled:").grid(row=7,column=text_lable_column)
 scrambled_text = ttk.Label(justify="left")
 scrambled_text.grid(row=7, column=text_output_column, sticky = W)
 
-ttk.Label(text="piglatin text:").grid(row=8,column=text_lable_column)
+ttk.Label(text="piglatin:").grid(row=8,column=text_lable_column)
 piglatin_text = ttk.Label(justify="left")
 piglatin_text.grid(row=8, column=text_output_column, sticky = W)
 
-ttk.Label(text="zalgo text:").grid(row=9,column=text_lable_column)
+ttk.Label(text="zalgo:").grid(row=9,column=text_lable_column)
 zalgo_text = ttk.Label(justify="left")
 zalgo_text.grid(row=9, column=text_output_column, sticky = W)
 
-ttk.Label(text="emoticons text:").grid(row=10,column=text_lable_column)
+ttk.Label(text="emoticons:").grid(row=10,column=text_lable_column)
 emoticons_text = ttk.Label(justify="left")
 emoticons_text.grid(row=10, column=text_output_column, sticky = W)
 
