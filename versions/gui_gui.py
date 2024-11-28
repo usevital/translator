@@ -11,6 +11,7 @@ converter = TextConverter()
 text_lable_column=0
 copy_button_column=1
 text_output_column=2
+dir = os.path.dirname(__file__)
 
 def copy_to_clipboard(text):
     pyperclip.copy(text['text'])
@@ -44,12 +45,12 @@ def add_copy_buttons():
 
 root = Tk()
 root.title("Translator")
-ico = Image.open('images/icon.ico')
+ico = Image.open(os.path.join(dir,'../images/icon.ico'))
 photo = ImageTk.PhotoImage(ico)
+copy_icon = Image.open(os.path.join(dir,'../images/content_copy.png'))
+copy_icon = ImageTk.PhotoImage(copy_icon)
 root.wm_iconphoto(False, photo)
 root.geometry("240x350")
-copy_icon = Image.open('images/content_copy.png')
-copy_icon = ImageTk.PhotoImage(copy_icon)
 
 translate_text = StringVar()
 translate_text.trace_add("write", add_text)
