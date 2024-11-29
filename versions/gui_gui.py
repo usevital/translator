@@ -45,9 +45,9 @@ def add_copy_buttons():
 
 root = Tk()
 root.title("Translator")
-ico = Image.open(os.path.join(dir,'./images/icon.ico'))
+ico = Image.open(os.path.join(dir,'../_internal/images/icon.ico'))
 photo = ImageTk.PhotoImage(ico)
-copy_icon = Image.open(os.path.join(dir,'./images/content_copy.png'))
+copy_icon = Image.open(os.path.join(dir,'../_internal/images/content_copy.png'))
 copy_icon = ImageTk.PhotoImage(copy_icon)
 root.wm_iconphoto(False, photo)
 root.geometry("240x350")
