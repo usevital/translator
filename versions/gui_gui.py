@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from library.TextConverter import TextConverter
 converter = TextConverter()
-text_lable_column=0
+text_label_column=0
 copy_button_column=1
 text_output_column=2
 dir = os.path.dirname(__file__)
@@ -57,43 +57,43 @@ translate_text.trace_add("write", add_text)
 input_widget = ttk.Entry(root, textvariable=translate_text)
 input_widget.grid(row=0, column=0, columnspan=2)
 
-ttk.Label(text="Reversed:").grid(row=1,column=text_lable_column)
+ttk.Label(text="Reversed:").grid(row=1,column=text_label_column)
 reversed_text = ttk.Label(justify="left")
 reversed_text.grid(row=1, column=text_output_column, sticky = W)
 
-ttk.Label(text="Flipped:").grid(row=2,column=text_lable_column)
+ttk.Label(text="Flipped:").grid(row=2,column=text_label_column)
 flipped_text = ttk.Label(justify="left")
 flipped_text.grid(row=2, column=text_output_column, sticky = W)
 
-ttk.Label(text="Enchanted:").grid(row=3,column=text_lable_column)
+ttk.Label(text="Enchanted:").grid(row=3,column=text_label_column)
 enchanted_text = ttk.Label(justify="left")
 enchanted_text.grid(row=3, column=text_output_column, sticky = W)
 
-ttk.Label(text="Capitalized:").grid(row=4,column=text_lable_column)
+ttk.Label(text="Capitalized:").grid(row=4,column=text_label_column)
 capitalized_text = ttk.Label(justify="left")
 capitalized_text.grid(row=4, column=text_output_column, sticky = W)
 
-ttk.Label(text="Lowercased:").grid(row=5,column=text_lable_column)
+ttk.Label(text="Lowercased:").grid(row=5,column=text_label_column)
 lowercased_text = ttk.Label(justify="left")
 lowercased_text.grid(row=5, column=text_output_column, sticky = W)
 
-ttk.Label(text="Leetspeak:").grid(row=6,column=text_lable_column)
+ttk.Label(text="Leetspeak:").grid(row=6,column=text_label_column)
 leetspeak_text = ttk.Label(justify="left")
 leetspeak_text.grid(row=6, column=text_output_column, sticky = W)
 
-ttk.Label(text="Scrambled:").grid(row=7,column=text_lable_column)
+ttk.Label(text="Scrambled:").grid(row=7,column=text_label_column)
 scrambled_text = ttk.Label(justify="left")
 scrambled_text.grid(row=7, column=text_output_column, sticky = W)
 
-ttk.Label(text="piglatin:").grid(row=8,column=text_lable_column)
+ttk.Label(text="piglatin:").grid(row=8,column=text_label_column)
 piglatin_text = ttk.Label(justify="left")
 piglatin_text.grid(row=8, column=text_output_column, sticky = W)
 
-ttk.Label(text="zalgo:").grid(row=9,column=text_lable_column)
+ttk.Label(text="zalgo:").grid(row=9,column=text_label_column)
 zalgo_text = ttk.Label(justify="left")
 zalgo_text.grid(row=9, column=text_output_column, sticky = W)
 
-ttk.Label(text="emoticons:").grid(row=10,column=text_lable_column)
+ttk.Label(text="emoticons:").grid(row=10,column=text_label_column)
 emoticons_text = ttk.Label(justify="left")
 emoticons_text.grid(row=10, column=text_output_column, sticky = W)
 
