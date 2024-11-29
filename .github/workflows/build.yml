@@ -42,7 +42,7 @@ jobs:
               run: pyinstaller versions/cli_args.py --icon=images/icon.ico
 
             - name: PyInstaller (GUI)
-              run: pyinstaller versions/gui_gui.py --icon=images/icon.ico --add-data "images/icon.ico:images"
+              run: pyinstaller versions/gui_gui.py --icon=images/icon.ico --add-data "images/icon.ico:images" --add-data "images/content_copy.png:images"
 
             - name: Upload Builds
               uses: actions/upload-artifact@v4
