@@ -36,13 +36,21 @@ jobs:
                 pip install pyinstaller
 
             - name: PyInstaller (Terminal GUI)
-              run: pyinstaller versions/terminal_gui.py --icon=images/icon.ico
+              run: pyinstaller versions/terminal_gui.py --icon=images/icon.ico --name cmd
 
             - name: PyInstaller (CLI)
-              run: pyinstaller versions/cli_args.py --icon=images/icon.ico
+              run: pyinstaller versions/cli_args.py --icon=images/icon.ico --name cli
 
             - name: PyInstaller (GUI)
-              run: pyinstaller versions/gui_gui.py --icon=images/icon.ico --add-data "images/icon.ico:images" --add-data "images/content_copy.png:images"
+              run: pyinstaller versions/gui_gui.py --icon=images/icon.ico --add-data "images/icon.ico:images" --add-data "images/content_copy.png:images" --name gui
+
+            - name: Include extra files
+              run: |
+                echo # translator CI build >> dist/README.md
+                cat .github/extra-files/partial-README.md >> dist/README.md
+                echo This was built from ${{ github.repository }} >> dist/README.md
+                echo The SHA-1 hash of the commit that these were built from is ${{ github.sha }} >> dist/README.md
+                cat .github/extra-files/licenses/google-material-design-icons-license.txt >> dist/licenses/google-material-design-icons-license.txt
 
             - name: Upload Builds
               uses: actions/upload-artifact@v4
