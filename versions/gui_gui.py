@@ -18,8 +18,6 @@ def copy_to_clipboard(text):
 
 def add_text(*args):
     new_text = translate_text.get()
-    x_size=int(8.5*len(new_text)+240)
-    root.geometry(f"{x_size}x{350}")
     reversed_text['text'] = converter.reverse_text(new_text)
     flipped_text['text'] = converter.text_flip(new_text)
     enchanted_text['text'] = converter.enchant_text(new_text)
@@ -50,7 +48,7 @@ photo = ImageTk.PhotoImage(ico)
 copy_icon = Image.open(os.path.join(dir,'../_internal/images/content_copy.png'))
 copy_icon = ImageTk.PhotoImage(copy_icon)
 root.wm_iconphoto(False, photo)
-root.geometry("240x350")
+root.geometry("720x550")
 
 translate_text = StringVar()
 translate_text.trace_add("write", add_text)
