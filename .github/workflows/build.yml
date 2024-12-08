@@ -45,7 +45,7 @@ jobs:
               run: pyinstaller versions/gui_gui.py --icon=images/icon.ico --add-data "images/icon.ico:images" --add-data "images/content_copy.png:images" --name gui
 
             - name: Include extra files
-              if: ${{ matrix.os != "windows-latest" }}
+              if: ${{ matrix.os != 'windows-latest' }}
               run: |
                 echo # translator CI build >> dist/README.md
                 cat .github/extra-files/partial-README.md >> dist/README.md
