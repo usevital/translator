@@ -49,6 +49,7 @@ jobs:
               shell: bash
               run: |
                 echo # translator CI build >> dist/README.md
+                cat dist/README.md
                 cat .github/extra-files/partial-README.md >> dist/README.md
                 echo This was built from ${{ github.repository }} >> dist/README.md
                 echo The SHA-1 hash of the commit that these were built from is ${{ github.sha }} >> dist/README.md
